@@ -1,2 +1,6 @@
 @import "tailwindcss";
+
 @plugin "daisyui";
+
+/* Tumi jodi white theme chao, tobe niche eta add korte paro */
+@custom-variant dark (&:where(.dark, .dark *));
