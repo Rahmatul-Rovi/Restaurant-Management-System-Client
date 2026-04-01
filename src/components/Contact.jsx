@@ -55,11 +55,11 @@ const Contact = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div className="form-control">
                                     <label className="label text-sm font-semibold text-slate-700">Full Name</label>
-                                    <input type="text" placeholder="John Doe" className="input input-bordered bg-slate-50 border-none focus:ring-2 focus:ring-primary transition-all rounded-xl" />
+                                    <input type="text" placeholder="Enter Your Name" className="input input-bordered bg-slate-50 border-none focus:ring-2 focus:ring-primary transition-all rounded-xl" />
                                 </div>
                                 <div className="form-control">
                                     <label className="label text-sm font-semibold text-slate-700">Email Address</label>
-                                    <input type="email" placeholder="example@mail.com" className="input input-bordered bg-slate-50 border-none focus:ring-2 focus:ring-primary transition-all rounded-xl" />
+                                    <input type="email" placeholder="Enter Your Email" className="input input-bordered bg-slate-50 border-none focus:ring-2 focus:ring-primary transition-all rounded-xl" />
                                 </div>
                             </div>
                             <div className="form-control">

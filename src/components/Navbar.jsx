@@ -2,7 +2,7 @@ import { Link, NavLink } from "react-router-dom";
 import { HiOutlineShoppingBag, HiOutlineSearch, HiOutlineGlobeAlt } from "react-icons/hi";
 
 const Navbar = () => {
-    // Active link style korar jonno eita use kora jay
+
     const navOptions = (
         <>
             <li><NavLink to="/" className={({ isActive }) => isActive ? "text-primary font-bold" : "hover:text-primary transition-colors"}>Home</NavLink></li>
