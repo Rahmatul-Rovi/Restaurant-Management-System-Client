@@ -2,6 +2,11 @@ import React from 'react';
 import { HiStar, HiOutlineShoppingBag } from "react-icons/hi";
 
 const FoodCard = ({ item }) => {
+    // Safety Check: Jodi item undefined hoy, tahole error na diye kisu show korbe na
+    if (!item) {
+        return null;
+    }
+
     const { name, image, price, recipe, rating } = item;
 
     return (

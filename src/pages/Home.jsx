@@ -1,6 +1,8 @@
 import Banner from "../components/Banner";
 import Categories from "../components/Categories";
 import Contact from "../components/Contact";
+import FoodCard from "../components/FoodCard";
+import PopularFoods from "../components/PopularFoods";
 
 const Home = () => {
     return (
@@ -8,10 +10,14 @@ const Home = () => {
             <Banner />
           <Categories/>
          
-           
+              {/* Popular Foods Grid */}
             <div className="text-center my-20">
-                <h3 className="text-2xl font-bold">Popular Dishes section coming soon...</h3>
+                <PopularFoods/>
             </div>
+
+         
+           
+
              <Contact/>
         </div>
     );
