@@ -7,25 +7,40 @@ const PopularFoods = () => {
 
     useEffect(() => {
         
-        fetch('http://localhost:5000/menu')
+        fetch('http://localhost:5000/menu/popular') 
             .then(res => res.json())
             .then(data => {
-                
-                const popular = data.filter(item => item.category === 'popular').slice(0, 8);
-                setFoods(popular);
+
+                setFoods(data.slice(0, 8)); 
                 setLoading(false);
             })
+            .catch(err => {
+                console.error("Data fetch error:", err);
+                setLoading(false);
+            });
     }, []);
 
-    if (loading) return <div className="text-center py-20">Loading Deshi Food...</div>;
+    if (loading) return (
+        <div className="flex justify-center items-center py-20">
+            <span className="loading loading-spinner loading-lg text-primary"></span>
+            <p className="ml-4 text-xl font-semibold">Khuda lagche? Khabar asche...</p>
+        </div>
+    );
 
     return (
         <section className="py-16 px-6 max-w-7xl mx-auto">
-            <h2 className="text-4xl font-bold mb-10 text-center text-slate-800">
-                Our <span className="text-primary">Popular</span> Items
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                {foods.map(food => <FoodCard key={food._id} item={food} />)}
+            <div className="text-center mb-12">
+                <span className="text-primary font-bold uppercase tracking-widest text-sm">Customer Favorites</span>
+                <h2 className="text-4xl md:text-5xl font-black text-slate-800 mt-2">
+                    Our <span className="text-primary">Popular</span> Items
+                </h2>
+                <div className="w-24 h-1 bg-primary mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                {foods.map(food => (
+                    <FoodCard key={food._id} item={food} />
+                ))}
             </div>
         </section>
     );
