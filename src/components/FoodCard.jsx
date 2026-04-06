@@ -12,9 +12,9 @@ const FoodCard = ({ item }) => {
     return (
         <div className="bg-white rounded-[2rem] p-4 shadow-lg hover:shadow-2xl transition-all duration-300 group border border-gray-50 relative overflow-hidden">
             {/* Price Tag */}
-            <div className="absolute top-6 right-6 z-10 bg-primary text-white font-bold px-4 py-1 rounded-full shadow-lg">
-                ${price}
-            </div>
+           <div className="absolute top-6 right-6 z-10 bg-primary text-white font-bold px-4 py-1 rounded-full shadow-lg">
+    ৳{price}
+</div>
 
             {/* Image Section */}
             <div className="overflow-hidden rounded-2xl aspect-square mb-4">
