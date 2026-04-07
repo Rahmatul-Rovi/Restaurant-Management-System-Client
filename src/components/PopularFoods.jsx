@@ -47,13 +47,13 @@ const PopularFoods = () => {
             </div>
 
             {/* View Full Menu Button Section (Skewed Style) */}
-            <div className="mt-16 text-center">
+           <div className="mt-16 text-center">
                 <Link to="/menu" className="inline-block group relative">
-                    {/* Shadow Layer for Depth */}
-                    <div className="absolute inset-0 bg-[#ff6b08] opacity-20 blur-xl group-hover:opacity-40 transition-opacity rounded-md"></div>
+                  
+                    <div className="absolute inset-0 bg-[#ff6b08] opacity-10 blur-xl group-hover:opacity-30 transition-opacity rounded-md"></div>
                     
-                    <button className="px-10 py-3 font-bold bg-[#ff6b08] text-white hover:bg-black transition-all duration-300 uppercase tracking-widest text-sm transform -skew-x-12 shadow-lg">
-                        <span className="inline-block skew-x-12">Explore Full Menu</span>
+                    <button className="relative px-12 py-4 font-bold bg-[#ff6b08] text-white hover:bg-black transition-all duration-300 uppercase tracking-widest text-sm rounded-md shadow-lg border-none">
+                        Explore Full Menu
                     </button>
                 </Link>
             </div>
