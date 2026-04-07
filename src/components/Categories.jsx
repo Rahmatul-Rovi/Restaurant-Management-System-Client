@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 const Categories = () => {
     // Deshi food categories with relevant icons
@@ -24,9 +25,11 @@ const Categories = () => {
                     </h2>
                 </div>
                 {/* View All Button with Orange Theme */}
+              <Link to="/menu">
                 <button className="hidden md:block text-[#ff6b08] font-bold hover:underline decoration-2 underline-offset-8 transition-all">
                     View All Categories →
                 </button>
+              </Link>
             </div>
 
             {/* Categories Grid */}
