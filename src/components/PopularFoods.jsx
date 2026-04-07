@@ -44,13 +44,13 @@ const PopularFoods = () => {
                 ))}
             </div>
             {/* ২. View Full Menu Button Section */}
-            <div className="mt-16 text-center">
-                <Link to="/menu">
-                    <button className="btn btn-outline btn-primary px-10 rounded-full font-bold border-2 hover:shadow-lg hover:shadow-orange-100 transition-all duration-300">
-                        View Full Menu
-                    </button>
-                </Link>
-            </div>
+          <div className="mt-16 text-center">
+    <Link to="/menu">
+      <button className="px-10 py-3 font-bold border-2 border-[#ff6b08] text-[#ff6b08] hover:bg-[#ff6b08] hover:text-white transition-all duration-300 uppercase tracking-widest text-sm rounded-md">
+    Explore Full Menu
+</button>
+    </Link>
+</div>
         </section>
     );
 };
