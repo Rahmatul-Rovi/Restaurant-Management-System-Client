@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import FoodCard from './FoodCard';
+import { Link } from 'react-router-dom';
 
 const PopularFoods = () => {
     const [foods, setFoods] = useState([]);
@@ -23,7 +24,7 @@ const PopularFoods = () => {
     if (loading) return (
         <div className="flex justify-center items-center py-20">
             <span className="loading loading-spinner loading-lg text-primary"></span>
-            <p className="ml-4 text-xl font-semibold">Khuda lagche? Khabar asche...</p>
+            <p className="ml-4 text-xl font-semibold">Hungry? Foods are Coming...</p>
         </div>
     );
 
@@ -41,6 +42,14 @@ const PopularFoods = () => {
                 {foods.map(food => (
                     <FoodCard key={food._id} item={food} />
                 ))}
+            </div>
+            {/* ২. View Full Menu Button Section */}
+            <div className="mt-16 text-center">
+                <Link to="/menu">
+                    <button className="btn btn-outline btn-primary px-10 rounded-full font-bold border-2 hover:shadow-lg hover:shadow-orange-100 transition-all duration-300">
+                        View Full Menu
+                    </button>
+                </Link>
             </div>
         </section>
     );

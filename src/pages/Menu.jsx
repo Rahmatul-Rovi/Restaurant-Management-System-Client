@@ -16,7 +16,7 @@ const Menu = () => {
             .catch(err => console.error(err));
     }, []);
 
-    if (loading) return <div className="text-center py-20 font-bold text-2xl">Khabarer menu ready hocche...</div>;
+    if (loading) return <div className="text-center py-20 font-bold text-2xl">Loading Food menu...</div>;
 
     return (
         <div className="pt-20 pb-16 px-6 max-w-7xl mx-auto">
