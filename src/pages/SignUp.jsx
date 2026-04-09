@@ -1,9 +1,12 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../providers/AuthProvider';
+import { FaGoogle } from "react-icons/fa";
+import { updateProfile } from "firebase/auth";
 
 const SignUp = () => {
-    const { createUser } = useContext(AuthContext);
+    const { createUser, signInWithGoogle } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleSignUp = (e) => {
         e.preventDefault();
@@ -14,10 +17,29 @@ const SignUp = () => {
 
         createUser(email, password)
             .then(result => {
-                console.log("User Created:", result.user);
+                const loggedUser = result.user;
+                console.log("User Created:", loggedUser);
+
+                updateProfile(loggedUser, {
+                    displayName: name
+                })
+                .then(() => {
+                    console.log("Profile Updated");
+                    navigate('/');
+                })
+                .catch(err => console.error(err));
             })
             .catch(error => console.error(error));
     };
+
+    const handleGoogleSignUp = () => {
+        signInWithGoogle()
+            .then(result => {
+                console.log("Google User:", result.user);
+                navigate('/');
+            })
+            .catch(error => console.error(error));
+    }
 
     return (
         <div className="min-h-screen bg-slate-50 flex items-center justify-center py-20 px-6">
@@ -45,6 +67,16 @@ const SignUp = () => {
                         Create Account
                     </button>
                 </form>
+
+                {/* Google Sign Up Section */}
+                <div className="divider my-8 text-slate-300 text-xs font-bold uppercase tracking-widest">OR</div>
+
+                <button 
+                    onClick={handleGoogleSignUp}
+                    className="w-full py-4 border-2 border-slate-100 rounded-2xl flex items-center justify-center gap-3 font-bold text-slate-700 hover:bg-slate-50 transition-all"
+                >
+                    <FaGoogle className="text-[#ff6b08]" /> Continue with Google
+                </button>
 
                 <p className="text-center mt-8 text-slate-500 font-medium">
                     Already have an account? <Link to="/login" className="text-[#ff6b08] font-bold">Login Here</Link>
