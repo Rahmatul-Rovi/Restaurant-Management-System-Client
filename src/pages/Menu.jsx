@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import FoodCard from '../components/FoodCard';
 
 const Menu = () => {
-    const [allMenu, setAllMenu] = useState([]); // Original data storage
-    const [filteredMenu, setFilteredMenu] = useState([]); // Display data storage
+    const [allMenu, setAllMenu] = useState([]); 
+    const [filteredMenu, setFilteredMenu] = useState([]); 
     const [loading, setLoading] = useState(true);
-    const [activeCategory, setActiveCategory] = useState('All'); // Current selected tab
+    const [activeCategory, setActiveCategory] = useState('All'); 
 
-    // Category List - Apnar database-er name gulor sathe mil rekhe
-    const categories = ['All', 'Biryani', 'Curry', 'Vortas', 'Snacks', 'Desserts', 'Drinks'];
+    const categories = ['All', 'Biryani', 'Curry', 'Vortas', 'Fish', 'Desserts'];
 
     useEffect(() => {
         // Fetch All Data Once
@@ -16,7 +15,7 @@ const Menu = () => {
             .then(res => res.json())
             .then(data => {
                 setAllMenu(data);
-                setFilteredMenu(data); // Initially show everything
+                setFilteredMenu(data); 
                 setLoading(false);
             })
             .catch(err => {
@@ -47,7 +46,7 @@ const Menu = () => {
         <div className="pt-28 pb-16 px-6 max-w-7xl mx-auto">
             {/* Header Section */}
             <div className="text-center mb-12">
-                <span className="text-[#ff6b08] font-bold uppercase tracking-[0.3em] text-xs">Menu Selection</span>
+                <span className="text-[#ff6b08] font-bold text-3xl uppercase tracking-[0.3em] text-xs">Menu Selection</span>
                 <h2 className="text-5xl font-black text-slate-800 mt-2">
                     Our Full <span className="text-[#ff6b08]">Menu</span>
                 </h2>
