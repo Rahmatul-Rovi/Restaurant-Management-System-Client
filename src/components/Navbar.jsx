@@ -60,10 +60,10 @@ const Navbar = () => {
 
                 {/* Login & Sign Up Section */}
                 <div className="flex items-center gap-2 ml-2">
-                    <Link to="/login" className="btn btn-ghost btn-sm hidden md:flex font-bold text-slate-600">
+                    <Link to="/signUp" className="btn btn-ghost btn-sm hidden md:flex font-bold text-slate-600">
                         Sign In
                     </Link>
-                    <Link to="/signup" className="btn btn-primary btn-sm md:btn-md rounded-full px-6 md:px-8 shadow-lg shadow-orange-200 text-white font-bold">
+                    <Link to="/login" className="btn btn-primary btn-sm md:btn-md rounded-full px-6 md:px-8 shadow-lg shadow-orange-200 text-white font-bold">
                         Login
                     </Link>
                 </div>
