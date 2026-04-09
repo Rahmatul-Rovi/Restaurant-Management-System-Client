@@ -5,6 +5,7 @@ import Contact from "../components/Contact";
 import FoodCard from "../components/FoodCard";
 import Menu from "../pages/Menu";
 import Login from "../pages/Login";
+import SignUp from "../pages/SignUp";
 
 export const router = createBrowserRouter([
     {
@@ -29,7 +30,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/signUp",
-                
+                element: <SignUp/>
             },
             {
                 path: "/signIn",
