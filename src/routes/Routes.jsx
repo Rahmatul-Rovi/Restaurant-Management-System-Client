@@ -6,6 +6,7 @@ import FoodCard from "../components/FoodCard";
 import Menu from "../pages/Menu";
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
+import Cart from "../pages/Cart";
 
 export const router = createBrowserRouter([
     {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
             {
                 path: "/login",
                 element: <Login/>
+            },
+            {
+                path: "/cart",
+                element: <Cart/>
             }
         ],
     },
