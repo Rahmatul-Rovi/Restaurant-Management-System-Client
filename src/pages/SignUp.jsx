@@ -73,7 +73,7 @@ const SignUp = () => {
 
                 <button 
                     onClick={handleGoogleSignUp}
-                    className="w-full py-4 border-2 border-slate-100 rounded-2xl flex items-center justify-center gap-3 font-bold text-slate-700 hover:bg-slate-50 transition-all"
+                    className="w-full py-4 border-2 border-slate-100 rounded-2xl flex items-center justify-center gap-3 font-bold text-slate-700 hover:bg-slate-300 transition-all"
                 >
                     <FaGoogle className="text-[#ff6b08]" /> Continue with Google
                 </button>
