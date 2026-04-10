@@ -44,6 +44,7 @@ const Menu = () => {
 
     return (
         <div className="pt-28 pb-16 px-6 max-w-7xl mx-auto">
+            
             {/* Header Section */}
             <div className="text-center mb-12">
                 <span className="text-[#ff6b08] font-bold text-3xl uppercase tracking-[0.3em] text-xs">Menu Selection</span>

@@ -7,7 +7,7 @@ const PopularFoods = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Database theke data fetch korchi
+        // Data fetching from database
         fetch('http://localhost:5000/menu/popular') 
             .then(res => res.json())
             .then(data => {
