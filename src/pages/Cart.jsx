@@ -1,13 +1,45 @@
-import { useContext } from 'react';
-import { CartContext } from '../providers/CartProvider';
 import { HiOutlineTrash } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
+import useCart from '../hooks/useCart';
+import Swal from 'sweetalert2';
 
 const Cart = () => {
-    const { cart, removeFromCart } = useContext(CartContext);
+    const [cart, refetch] = useCart(); // Cart data and refetch function
 
-    // Calculate total price
+    // Calculate total price 
     const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#ff6b08",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Delete Api Call
+                fetch(`http://localhost:5000/carts/${id}`, {
+                    method: 'DELETE'
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.deletedCount > 0) {
+                        refetch(); 
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your food has been removed.",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                })
+            }
+        });
+    }
 
     return (
         <div className="pt-32 pb-16 px-6 max-w-7xl mx-auto min-h-screen">
@@ -22,15 +54,15 @@ const Cart = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                     {/* Left Side: Item List */}
                     <div className="lg:col-span-2 space-y-4">
-                        {cart.map((item, index) => (
-                            <div key={index} className="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                        {cart.map((item) => (
+                            <div key={item._id} className="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
                                 <img src={item.image} alt={item.name} className="w-24 h-24 object-cover rounded-xl" />
                                 <div className="flex-1">
                                     <h3 className="font-bold text-lg text-slate-800">{item.name}</h3>
-                                    <p className="text-[#ff6b08] font-bold">${item.price}</p>
+                                    <p className="text-[#ff6b08] font-bold">৳{item.price}</p>
                                 </div>
                                 <button 
-                                    onClick={() => removeFromCart(item._id)}
+                                    onClick={() => handleDelete(item._id)}
                                     className="btn btn-circle btn-ghost text-red-500 hover:bg-red-50"
                                 >
                                     <HiOutlineTrash className="text-2xl" />
@@ -49,7 +81,7 @@ const Cart = () => {
                             </div>
                             <div className="flex justify-between text-xl font-bold text-slate-800 border-t pt-4">
                                 <span>Total Price:</span>
-                                <span className="text-[#ff6b08]">${totalPrice.toFixed(2)}</span>
+                                <span className="text-[#ff6b08]">৳{totalPrice.toFixed(2)}</span>
                             </div>
                         </div>
                         <button className="btn bg-[#ff6b08] hover:bg-slate-900 border-none w-full text-white font-bold rounded-full py-4 shadow-lg shadow-orange-100">
