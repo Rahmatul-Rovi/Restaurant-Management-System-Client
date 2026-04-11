@@ -22,6 +22,17 @@ const Navbar = () => {
             <li><NavLink to="/menu" className={({ isActive }) => isActive ? "text-[#ff6b08] font-bold" : "hover:text-[#ff6b08] transition-colors"}>Menu</NavLink></li>
             <li><NavLink to="/offers" className={({ isActive }) => isActive ? "text-[#ff6b08] font-bold" : "hover:text-[#ff6b08] transition-colors"}>Offers</NavLink></li>
             <li><NavLink to="/contact" className={({ isActive }) => isActive ? "text-[#ff6b08] font-bold" : "hover:text-[#ff6b08] transition-colors"}>Contact</NavLink></li>
+
+            {user && (
+            <li>
+                <NavLink 
+                    to="/dashboard" 
+                    className={({ isActive }) => isActive ? "text-[#ff6b08] font-bold" : "hover:text-[#ff6b08] transition-colors"}
+                >
+                    Dashboard
+                </NavLink>
+            </li>
+        )}
         </>
     );
 
