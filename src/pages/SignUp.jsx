@@ -20,22 +20,39 @@ const SignUp = () => {
             .then(result => {
                 const loggedUser = result.user;
                 
-                // প্রোফাইল আপডেট (নাম সেট করা)
                 updateProfile(loggedUser, {
                     displayName: name
                 })
                 .then(() => {
-                    Swal.fire({
-                        title: 'Account Created!',
-                        text: `Welcome to TastyTwists, ${name}!`,
-                        icon: 'success',
-                        timer: 2000,
-                        showConfirmButton: false,
-                        position: "center"
-                    });
-                    
-                    // একাউন্ট তৈরি এবং নাম সেট হওয়ার পর হোম পেজে রিডাইরেক্ট
-                    navigate('/');
+                    // ১. এখানে ইউজার অবজেক্ট তৈরি করো ডাটাবেজের জন্য
+                    const userInfo = {
+                        name: name,
+                        email: email,
+                        role: 'user' // ডিফল্টভাবে সবাই ইউজার
+                    };
+
+                    // ২. ডাটাবেজে ইউজার পাঠানোর API কল
+                    fetch('http://localhost:5000/users', {
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify(userInfo)
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.insertedId) {
+                            Swal.fire({
+                                title: 'Account Created!',
+                                text: `Welcome to TastyTwists, ${name}!`,
+                                icon: 'success',
+                                timer: 2000,
+                                showConfirmButton: false,
+                                position: "center"
+                            });
+                            navigate('/');
+                        }
+                    })
                 })
                 .catch(err => console.error(err));
             })
@@ -53,19 +70,37 @@ const SignUp = () => {
     const handleGoogleSignUp = () => {
         signInWithGoogle()
             .then(result => {
-                Swal.fire({
-                    title: 'Welcome!',
-                    text: 'Signed up with Google successfully!',
-                    icon: 'success',
-                    timer: 1500,
-                    showConfirmButton: false
-                });
-                navigate('/');
+                // ৩. গুগল সাইন আপের ক্ষেত্রেও ডাটাবেজে সেভ করা জরুরি
+                const userInfo = {
+                    name: result.user?.displayName,
+                    email: result.user?.email,
+                    role: 'user'
+                };
+
+                fetch('http://localhost:5000/users', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(userInfo)
+                })
+                .then(res => res.json())
+                .then(() => {
+                    Swal.fire({
+                        title: 'Welcome!',
+                        text: 'Signed up with Google successfully!',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    navigate('/');
+                })
             })
             .catch(error => console.error(error));
     }
 
     return (
+        // তোমার নিচের রিটার্ন অংশ আগের মতোই থাকবে...
         <div className="min-h-screen bg-slate-50 flex items-center justify-center py-20 px-6">
             <div className="bg-white p-10 rounded-[3rem] shadow-2xl shadow-orange-100 border border-orange-50 w-full max-w-md">
                 <div className="text-center mb-10">
