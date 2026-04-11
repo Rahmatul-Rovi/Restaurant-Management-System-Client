@@ -2,10 +2,13 @@ import { useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { HiOutlineShoppingBag, HiOutlineSearch } from "react-icons/hi";
 import { AuthContext } from "../providers/AuthProvider";
+import useCart from "../hooks/useCart";
 
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
     const navigate = useNavigate();
+
+    const [cart] = useCart();
 
     const handleLogOut = () => {
         logOut()
@@ -15,6 +18,8 @@ const Navbar = () => {
             })
             .catch(err => console.error(err));
     };
+
+
 
     const navOptions = (
         <>
@@ -76,7 +81,7 @@ const Navbar = () => {
 
                 {/* Cart Icon */}
                 <Link to="/cart" className="indicator cursor-pointer group">
-                    <span className="indicator-item badge badge-primary bg-[#ff6b08] border-none badge-sm text-white font-bold">0</span>
+                    <span className="indicator-item badge badge-primary bg-[#ff6b08] border-none badge-sm text-white font-bold">{cart?.length||0}</span>
                     <div className="p-2.5 bg-gray-100 rounded-full group-hover:bg-orange-50 transition-colors">
                         <HiOutlineShoppingBag className="text-2xl text-slate-700 group-hover:text-[#ff6b08]" />
                     </div>
