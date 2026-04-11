@@ -3,11 +3,13 @@ import { HiStar, HiOutlineShoppingBag } from "react-icons/hi";
 import { AuthContext } from '../providers/AuthProvider';
 import Swal from 'sweetalert2';
 import { useNavigate, useLocation } from 'react-router-dom';
+import useCart from '../hooks/useCart';
 
 const FoodCard = ({ item }) => {
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
+    const [, refetch] = useCart();
 
     if (!item) return null;
 
@@ -33,16 +35,20 @@ const FoodCard = ({ item }) => {
             .then(res => res.json())
             .then(data => {
                 if (data.insertedId) {
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: `${name} added to cart!`,
-                        showConfirmButton: false,
-                        timer: 1500,
-                        iconColor: '#ff6b08', 
-                    });
+                  Swal.fire({
+    position: "center", 
+    icon: "success",
+    title: `${name} added to cart!`,
+    showConfirmButton: false,
+    timer: 1500,
+    iconColor: '#ff6b08', 
+    customClass: {
+        popup: 'rounded-[2rem]', 
+    }
+});
                     
                     // TODO: Future work using TanStack Query  refetch 
+                    refetch();
                 }
             })
         } else {
