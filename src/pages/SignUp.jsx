@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../providers/AuthProvider';
 import { FaGoogle } from "react-icons/fa";
 import { updateProfile } from "firebase/auth";
+import Swal from 'sweetalert2';
 
 const SignUp = () => {
     const { createUser, signInWithGoogle } = useContext(AuthContext);
@@ -18,24 +19,47 @@ const SignUp = () => {
         createUser(email, password)
             .then(result => {
                 const loggedUser = result.user;
-                console.log("User Created:", loggedUser);
-
+                
+                // প্রোফাইল আপডেট (নাম সেট করা)
                 updateProfile(loggedUser, {
                     displayName: name
                 })
                 .then(() => {
-                    console.log("Profile Updated");
+                    Swal.fire({
+                        title: 'Account Created!',
+                        text: `Welcome to TastyTwists, ${name}!`,
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false,
+                        position: "center"
+                    });
+                    
+                    // একাউন্ট তৈরি এবং নাম সেট হওয়ার পর হোম পেজে রিডাইরেক্ট
                     navigate('/');
                 })
                 .catch(err => console.error(err));
             })
-            .catch(error => console.error(error));
+            .catch(error => {
+                console.error(error);
+                Swal.fire({
+                    title: 'Registration Failed',
+                    text: error.message,
+                    icon: 'error',
+                    confirmButtonColor: '#ff6b08'
+                });
+            });
     };
 
     const handleGoogleSignUp = () => {
         signInWithGoogle()
             .then(result => {
-                console.log("Google User:", result.user);
+                Swal.fire({
+                    title: 'Welcome!',
+                    text: 'Signed up with Google successfully!',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
                 navigate('/');
             })
             .catch(error => console.error(error));
@@ -68,7 +92,6 @@ const SignUp = () => {
                     </button>
                 </form>
 
-                {/* Google Sign Up Section */}
                 <div className="divider my-8 text-slate-300 text-xs font-bold uppercase tracking-widest">OR</div>
 
                 <button 
