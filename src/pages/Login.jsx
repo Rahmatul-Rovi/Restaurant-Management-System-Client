@@ -1,11 +1,16 @@
-// src/pages/Login.jsx
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom'; // NEW: hooks added
 import { AuthContext } from '../providers/AuthProvider';
 import { FaGoogle } from "react-icons/fa";
+import Swal from 'sweetalert2';
 
 const Login = () => {
     const { signIn, signInWithGoogle } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // ইউজার যে পেজ থেকে রিডাইরেক্ট হয়ে এখানে এসেছে সেই পাথটা ধরছি
+    const from = location.state?.from?.pathname || "/";
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -14,7 +19,44 @@ const Login = () => {
         const password = form.password.value;
         
         signIn(email, password)
-            .then(result => console.log("Logged In", result.user))
+            .then(result => {
+                console.log("Logged In", result.user);
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Welcome back to TastyTwists!',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    position: "center"
+                });
+                
+                // লগইন শেষে কাঙ্ক্ষিত পেজে পাঠিয়ে দাও
+                navigate(from, { replace: true });
+            })
+            .catch(error => {
+                console.error(error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Invalid email or password',
+                    icon: 'error',
+                    confirmButtonColor: '#ff6b08'
+                });
+            });
+    };
+
+    const handleGoogleSignIn = () => {
+        signInWithGoogle()
+            .then(result => {
+                console.log(result.user);
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Logged in with Google successfully!',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                navigate(from, { replace: true });
+            })
             .catch(error => console.error(error));
     };
 
@@ -43,7 +85,7 @@ const Login = () => {
 
                 <div className="divider my-8 text-slate-300 text-xs font-bold uppercase tracking-widest">OR</div>
 
-                <button onClick={signInWithGoogle} className="w-full py-4 border-2 border-slate-100 rounded-2xl flex items-center justify-center gap-3 font-bold text-slate-700 hover:bg-slate-300 transition-all">
+                <button onClick={handleGoogleSignIn} className="w-full py-4 border-2 border-slate-100 rounded-2xl flex items-center justify-center gap-3 font-bold text-slate-700 hover:bg-slate-300 transition-all">
                     <FaGoogle className="text-[#ff6b08]" /> Continue with Google
                 </button>
 
