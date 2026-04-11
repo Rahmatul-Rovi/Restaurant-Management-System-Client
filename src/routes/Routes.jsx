@@ -7,6 +7,8 @@ import Menu from "../pages/Menu";
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
 import Cart from "../pages/Cart";
+import DashboardLayout from "../Layout/DashboardLayout";
+import PrivateRoute from "../routes/PrivateRoute"; 
 
 export const router = createBrowserRouter([
     {
@@ -43,4 +45,18 @@ export const router = createBrowserRouter([
             }
         ],
     },
+    {
+        path: "dashboard",
+        element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+        children: [
+            {
+                path: "myCart",
+                element: <Cart /> 
+            },
+            {
+                path: "userHome",
+                element: <div className="text-2xl font-bold">Welcome to your Dashboard, Brother!</div>
+            }
+        ]
+    }
 ]);
