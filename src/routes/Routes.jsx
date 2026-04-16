@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import Home from "../pages/Home";
 import Contact from "../components/Contact";
@@ -9,7 +9,6 @@ import SignUp from "../pages/SignUp";
 import Cart from "../pages/Cart";
 import DashboardLayout from "../Layout/DashboardLayout";
 import PrivateRoute from "../routes/PrivateRoute";
-// AllUsers ইম্পোর্ট করো (পাথটা তোমার প্রজেক্ট অনুযায়ী চেক করে নিও)
 import AllUsers from "../pages/Dashboard/Admin/AllUsers"; 
 
 export const router = createBrowserRouter([
@@ -30,6 +29,11 @@ export const router = createBrowserRouter([
         path: "dashboard",
         element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
         children: [
+            {
+                index: true,
+                element: <Navigate to="/dashboard/adminHome" replace />
+            },
+
             // --- User Routes ---
             {
                 path: "userHome",

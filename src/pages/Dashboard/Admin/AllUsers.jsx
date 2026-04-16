@@ -4,12 +4,16 @@ import Swal from "sweetalert2";
 
 const AllUsers = () => {
     // TanStack Query to refetch data 
-    const { data: users = [], refetch } = useQuery({
-        queryKey: ['users'],
-        queryFn: async () => {
-            const res = await fetch('http://localhost:5000/users');
-            return res.json();
+   const { data: users = [], isLoading, refetch } = useQuery({
+    queryKey: ['users'],
+    queryFn: async () => {
+        const res = await fetch('http://localhost:5000/users');
+        // চেক করো রেসপন্স ঠিক আছে কি না
+        if (!res.ok) {
+            throw new Error('Network response was not ok');
         }
+        return res.json();
+    }
     });
 
     // user to admin
