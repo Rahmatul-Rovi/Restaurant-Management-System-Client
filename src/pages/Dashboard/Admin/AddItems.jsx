@@ -1,24 +1,28 @@
 // src/pages/Dashboard/Admin/AddItems.jsx
-import { useForm } from "react-hook-form";
 import { HiOutlineUpload } from "react-icons/hi";
 import Swal from "sweetalert2";
 
 const AddItems = () => {
-    const { register, handleSubmit, reset } = useForm();
 
-    const onSubmit = async (data) => {
-        console.log(data);
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         
-        // Backend Data fetch
+        const form = event.target;
+        const name = form.name.value;
+        const category = form.category.value;
+        const price = form.price.value;
+        const image = form.image.value;
+        const recipe = form.recipe.value;
+
         const menuItem = {
-            name: data.name,
-            category: data.category,
-            price: parseFloat(data.price),
-            recipe: data.recipe,
-            image: data.image 
+            name,
+            category,
+            price: parseFloat(price),
+            recipe,
+            image
         };
 
-        // Backend Post Request
+        // Backend Data fetch
         fetch('http://localhost:5000/menu', {
             method: 'POST',
             headers: {
@@ -27,18 +31,22 @@ const AddItems = () => {
             body: JSON.stringify(menuItem)
         })
         .then(res => res.json())
-        .then(result => {
-            if(result.insertedId){
-                reset();
+        .then(data => {
+            if(data.insertedId){
+                form.reset(); 
                 Swal.fire({
                     position: "center",
                     icon: "success",
-                    title: `${data.name} added to the menu!`,
+                    title: `${name} added to the menu!`,
                     showConfirmButton: false,
                     timer: 1500
                 });
             }
         })
+        .catch(error => {
+            console.error("Error:", error);
+            Swal.fire("Error!", "Something went wrong", "error");
+        });
     };
 
     return (
@@ -49,18 +57,18 @@ const AddItems = () => {
             </div>
 
             <div className="bg-white p-10 rounded-[2.5rem] shadow-xl shadow-slate-100 border border-slate-100">
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    {/* Item Name */}
+                <form onSubmit={handleSubmit}>
+                    {/* Recipe Name */}
                     <div className="form-control w-full mb-6">
                         <label className="label font-bold text-slate-700">Recipe Name*</label>
-                        <input type="text" placeholder="e.g. Grilled Chicken" {...register("name", { required: true })} className="input input-bordered w-full rounded-xl focus:outline-[#ff6b08]" />
+                        <input name="name" type="text" placeholder="e.g. Grilled Chicken" required className="input input-bordered w-full rounded-xl focus:outline-[#ff6b08]" />
                     </div>
 
                     <div className="flex gap-6 mb-6">
                         {/* Category */}
                         <div className="form-control w-full">
                             <label className="label font-bold text-slate-700">Category*</label>
-                            <select defaultValue="default" {...register("category", { required: true })} className="select select-bordered rounded-xl focus:outline-[#ff6b08]">
+                            <select name="category" defaultValue="default" required className="select select-bordered rounded-xl focus:outline-[#ff6b08]">
                                 <option disabled value="default">Select Category</option>
                                 <option value="salad">Salad</option>
                                 <option value="pizza">Pizza</option>
@@ -73,20 +81,20 @@ const AddItems = () => {
                         {/* Price */}
                         <div className="form-control w-full">
                             <label className="label font-bold text-slate-700">Price*</label>
-                            <input type="number" step="0.01" placeholder="Price in $" {...register("price", { required: true })} className="input input-bordered w-full rounded-xl focus:outline-[#ff6b08]" />
+                            <input name="price" type="number" step="0.01" placeholder="Price in $" required className="input input-bordered w-full rounded-xl focus:outline-[#ff6b08]" />
                         </div>
                     </div>
 
                     {/* Image URL */}
                     <div className="form-control w-full mb-6">
                         <label className="label font-bold text-slate-700">Image URL*</label>
-                        <input type="text" placeholder="Paste image link here" {...register("image", { required: true })} className="input input-bordered w-full rounded-xl focus:outline-[#ff6b08]" />
+                        <input name="image" type="text" placeholder="Paste image link here" required className="input input-bordered w-full rounded-xl focus:outline-[#ff6b08]" />
                     </div>
 
                     {/* Recipe Details */}
                     <div className="form-control w-full mb-8">
                         <label className="label font-bold text-slate-700">Recipe Details*</label>
-                        <textarea {...register("recipe", { required: true })} className="textarea textarea-bordered h-24 rounded-xl focus:outline-[#ff6b08]" placeholder="Tell us about the dish..."></textarea>
+                        <textarea name="recipe" required className="textarea textarea-bordered h-24 rounded-xl focus:outline-[#ff6b08]" placeholder="Tell us about the dish..."></textarea>
                     </div>
 
                     <button type="submit" className="btn bg-[#ff6b08] hover:bg-slate-900 text-white border-none px-8 rounded-xl flex items-center gap-2">

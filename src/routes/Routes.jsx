@@ -10,6 +10,7 @@ import Cart from "../pages/Cart";
 import DashboardLayout from "../Layout/DashboardLayout";
 import PrivateRoute from "../routes/PrivateRoute";
 import AllUsers from "../pages/Dashboard/Admin/AllUsers"; 
+import AddItems from "../pages/Dashboard/Admin/AddItems";
 
 export const router = createBrowserRouter([
     {
@@ -55,7 +56,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "addItems",
-                element: <div className="text-2xl font-bold p-10">Page to Add New Delicious Food!</div>
+                element: <AddItems/>
             }
         ]
     }
