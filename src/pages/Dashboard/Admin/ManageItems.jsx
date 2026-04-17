@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react"; // স্টেট হ্যান্ডেল করার জন্য
+import { useState } from "react";
 import { HiOutlinePencilAlt, HiOutlineTrash, HiOutlineX } from "react-icons/hi";
 import Swal from "sweetalert2";
 
 const ManageItems = () => {
-    const [selectedItem, setSelectedItem] = useState(null); // যে আইটেম এডিট হবে
+    const [selectedItem, setSelectedItem] = useState(null);
 
     // Data fetch with TanStack Query 
     const { data: menu = [], refetch, isLoading } = useQuery({
@@ -39,7 +39,7 @@ const ManageItems = () => {
         });
     };
 
-    // Update Function
+    // Item Update Function
     const handleUpdate = async (e) => {
         e.preventDefault();
         const form = e.target;
@@ -60,7 +60,7 @@ const ManageItems = () => {
 
         if (data.success) {
             refetch();
-            setSelectedItem(null); // Modal বন্ধ করবে
+            setSelectedItem(null);
             Swal.fire("Updated!", "Item updated successfully", "success");
         }
     };
