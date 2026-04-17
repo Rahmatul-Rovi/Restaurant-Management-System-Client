@@ -75,14 +75,14 @@ const AddItems = () => {
                 <form onSubmit={handleSubmit}>
                     
                     <div className="form-control w-full mb-6">
-                        <label className="label font-bold text-slate-700">Recipe Name*</label>
+                        <label className="label font-bold text-slate-700">Recipe Name:</label>
                         <input name="name" type="text" required className="input input-bordered w-full rounded-xl" />
                     </div>
 
                     <div className="flex gap-6 mb-6">
                         
                         <div className="form-control w-full">
-                            <label className="label font-bold text-slate-700">Category*</label>
+                            <label className="label font-bold text-slate-700">Category:</label>
                             <select name="category" defaultValue="default" required className="select select-bordered rounded-xl">
                                 <option disabled value="default">Select Category</option>
                                 <option value="Biryani">Biryani</option>
@@ -94,18 +94,18 @@ const AddItems = () => {
                         </div>
 
                         <div className="form-control w-full">
-                            <label className="label font-bold text-slate-700">Price*</label>
+                            <label className="label font-bold text-slate-700">Price:</label>
                             <input name="price" type="number" step="0.01" required className="input input-bordered w-full rounded-xl" />
                         </div>
                     </div>
 
                     <div className="form-control w-full mb-6">
-                        <label className="label font-bold text-slate-700">Image URL*</label>
+                        <label className="label font-bold text-slate-700">Image URL:</label>
                         <input name="image" type="text" required className="input input-bordered w-full rounded-xl" />
                     </div>
 
                     <div className="form-control w-full mb-8">
-                        <label className="label font-bold text-slate-700">Recipe Details*</label>
+                        <label className="label font-bold text-slate-700">Recipe Details:</label>
                         <textarea name="recipe" required className="textarea textarea-bordered h-24 rounded-xl"></textarea>
                     </div>
 
