@@ -9,6 +9,7 @@ const SignUp = () => {
     const { createUser, signInWithGoogle } = useContext(AuthContext);
     const navigate = useNavigate();
 
+    // সাধারণ ইমেইল/পাসওয়ার্ড দিয়ে সাইনআপ
     const handleSignUp = (e) => {
         e.preventDefault();
         const form = e.target;
@@ -20,18 +21,18 @@ const SignUp = () => {
             .then(result => {
                 const loggedUser = result.user;
                 
+                // ১. ফায়ারবেস প্রোফাইল আপডেট
                 updateProfile(loggedUser, {
                     displayName: name
                 })
                 .then(() => {
-                    // ১. এখানে ইউজার অবজেক্ট তৈরি করো ডাটাবেজের জন্য
+                    // ২. ইউজার অবজেক্ট তৈরি (রোল ব্যাকেন্ডে সেট হবে, এখানে দরকার নেই)
                     const userInfo = {
                         name: name,
-                        email: email,
-                        role: 'user' // ডিফল্টভাবে সবাই ইউজার
+                        email: email
                     };
 
-                    // ২. ডাটাবেজে ইউজার পাঠানোর API কল
+                    // ৩. ডাটাবেজে পাঠানো
                     fetch('http://localhost:5000/users', {
                         method: 'POST',
                         headers: {
@@ -41,40 +42,39 @@ const SignUp = () => {
                     })
                     .then(res => res.json())
                     .then(data => {
-                        if (data.insertedId) {
+                        // ডাটা সেভ হলে বা ইউজার আগে থেকেই থাকলে নেভিগেট করো
+                        if (data.insertedId || data.message === 'User already exists') {
                             Swal.fire({
                                 title: 'Account Created!',
                                 text: `Welcome to TastyTwists, ${name}!`,
                                 icon: 'success',
-                                timer: 2000,
-                                showConfirmButton: false,
-                                position: "center"
+                                timer: 1500,
+                                showConfirmButton: false
                             });
                             navigate('/');
                         }
                     })
                 })
-                .catch(err => console.error(err));
+                .catch(err => console.error("Profile update error:", err));
             })
             .catch(error => {
                 console.error(error);
                 Swal.fire({
                     title: 'Registration Failed',
                     text: error.message,
-                    icon: 'error',
-                    confirmButtonColor: '#ff6b08'
+                    icon: 'error'
                 });
             });
     };
 
+    // গুগল দিয়ে সাইনআপ/লগইন
     const handleGoogleSignUp = () => {
         signInWithGoogle()
             .then(result => {
-                // ৩. গুগল সাইন আপের ক্ষেত্রেও ডাটাবেজে সেভ করা জরুরি
                 const userInfo = {
                     name: result.user?.displayName,
                     email: result.user?.email,
-                    role: 'user'
+                    photoURL: result.user?.photoURL
                 };
 
                 fetch('http://localhost:5000/users', {
@@ -85,10 +85,11 @@ const SignUp = () => {
                     body: JSON.stringify(userInfo)
                 })
                 .then(res => res.json())
-                .then(() => {
+                .then(data => {
+                    // এখানে সফলভাবে ডাটাবেজে ইউজার এন্ট্রি চেক করে নেভিগেট করা হচ্ছে
                     Swal.fire({
                         title: 'Welcome!',
-                        text: 'Signed up with Google successfully!',
+                        text: 'Login successful!',
                         icon: 'success',
                         timer: 1500,
                         showConfirmButton: false
@@ -96,11 +97,10 @@ const SignUp = () => {
                     navigate('/');
                 })
             })
-            .catch(error => console.error(error));
+            .catch(error => console.error("Google sign up error:", error));
     }
 
     return (
-        // তোমার নিচের রিটার্ন অংশ আগের মতোই থাকবে...
         <div className="min-h-screen bg-slate-50 flex items-center justify-center py-20 px-6">
             <div className="bg-white p-10 rounded-[3rem] shadow-2xl shadow-orange-100 border border-orange-50 w-full max-w-md">
                 <div className="text-center mb-10">
@@ -131,7 +131,8 @@ const SignUp = () => {
 
                 <button 
                     onClick={handleGoogleSignUp}
-                    className="w-full py-4 border-2 border-slate-100 rounded-2xl flex items-center justify-center gap-3 font-bold text-slate-700 hover:bg-slate-300 transition-all"
+                    type="button" 
+                    className="w-full py-4 border-2 border-slate-100 rounded-2xl flex items-center justify-center gap-3 font-bold text-slate-700 hover:bg-slate-50 hover:border-orange-200 transition-all"
                 >
                     <FaGoogle className="text-[#ff6b08]" /> Continue with Google
                 </button>

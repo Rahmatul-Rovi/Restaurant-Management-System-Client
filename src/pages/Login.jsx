@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom'; // NEW: hooks added
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../providers/AuthProvider';
 import { FaGoogle } from "react-icons/fa";
 import Swal from 'sweetalert2';
@@ -9,9 +9,10 @@ const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // ইউজার যে পেজ থেকে রিডাইরেক্ট হয়ে এখানে এসেছে সেই পাথটা ধরছি
+    // ইউজার যে পেজ থেকে রিডাইরেক্ট হয়ে এসেছে সেই পাথটা ধরছি
     const from = location.state?.from?.pathname || "/";
 
+    // ১. সাধারণ ইমেইল/পাসওয়ার্ড লগইন
     const handleLogin = (e) => {
         e.preventDefault();
         const form = e.target;
@@ -20,7 +21,6 @@ const Login = () => {
         
         signIn(email, password)
             .then(result => {
-                console.log("Logged In", result.user);
                 Swal.fire({
                     title: 'Success!',
                     text: 'Welcome back to TastyTwists!',
@@ -29,8 +29,6 @@ const Login = () => {
                     showConfirmButton: false,
                     position: "center"
                 });
-                
-                // লগইন শেষে কাঙ্ক্ষিত পেজে পাঠিয়ে দাও
                 navigate(from, { replace: true });
             })
             .catch(error => {
@@ -44,20 +42,42 @@ const Login = () => {
             });
     };
 
+    // ২. গুগল সাইন ইন (ডাটাবেজ কানেকশনসহ)
     const handleGoogleSignIn = () => {
         signInWithGoogle()
             .then(result => {
-                console.log(result.user);
-                Swal.fire({
-                    title: 'Success!',
-                    text: 'Logged in with Google successfully!',
-                    icon: 'success',
-                    timer: 1500,
-                    showConfirmButton: false
-                });
-                navigate(from, { replace: true });
+                const user = result.user;
+                
+                // গুগল দিয়ে লগইন করলেও চেক করতে হবে সে ডাটাবেজে আছে কি না
+                const userInfo = {
+                    name: user?.displayName,
+                    email: user?.email,
+                    photoURL: user?.photoURL
+                };
+
+                fetch('http://localhost:5000/users', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(userInfo)
+                })
+                .then(res => res.json())
+                .then(() => {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Logged in successfully!',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    navigate(from, { replace: true });
+                })
             })
-            .catch(error => console.error(error));
+            .catch(error => {
+                console.error("Google Login Error:", error);
+                Swal.fire('Error', 'Google sign in failed', 'error');
+            });
     };
 
     return (
@@ -78,14 +98,18 @@ const Login = () => {
                         <input name="password" type="password" placeholder="Password" className="w-full px-5 py-4 bg-slate-50 border-2 border-transparent focus:border-[#ff6b08] outline-none rounded-2xl transition-all font-medium" required />
                     </div>
                     
-                    <button className="w-full py-5 bg-[#ff6b08] text-white font-black uppercase tracking-widest rounded-2xl shadow-lg shadow-orange-200 hover:bg-slate-900 transition-all duration-300">
+                    <button type="submit" className="w-full py-5 bg-[#ff6b08] text-white font-black uppercase tracking-widest rounded-2xl shadow-lg shadow-orange-200 hover:bg-slate-900 transition-all duration-300">
                         Login
                     </button>
                 </form>
 
                 <div className="divider my-8 text-slate-300 text-xs font-bold uppercase tracking-widest">OR</div>
 
-                <button onClick={handleGoogleSignIn} className="w-full py-4 border-2 border-slate-100 rounded-2xl flex items-center justify-center gap-3 font-bold text-slate-700 hover:bg-slate-300 transition-all">
+                <button 
+                    onClick={handleGoogleSignIn} 
+                    type="button"
+                    className="w-full py-4 border-2 border-slate-100 rounded-2xl flex items-center justify-center gap-3 font-bold text-slate-700 hover:bg-slate-50 hover:border-orange-200 transition-all"
+                >
                     <FaGoogle className="text-[#ff6b08]" /> Continue with Google
                 </button>
 

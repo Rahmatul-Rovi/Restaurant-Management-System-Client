@@ -36,6 +36,32 @@ const AllUsers = () => {
         })
     }
 
+    // handleDeleteUser ফাংশনটি AllUsers.jsx এ অ্যাড করো
+const handleDeleteUser = (user) => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: `Delete ${user.name} from records?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete!"
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            fetch(`http://localhost:5000/users/${user._id}`, {
+                method: 'DELETE'
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.deletedCount > 0) {
+                    refetch();
+                    Swal.fire("Deleted!", "User removed.", "success");
+                }
+            })
+        }
+    });
+};
+
     return (
         <div className="w-full">
             {/* Header Section */}
