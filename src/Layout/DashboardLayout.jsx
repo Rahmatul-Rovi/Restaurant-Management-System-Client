@@ -13,9 +13,13 @@ const DashboardLayout = () => {
     const [isAdmin, isAdminLoading] = useAdmin();
 
     // 🔥 loading state
-    if (isAdminLoading) {
-        return <p className="p-10 text-xl font-bold">Loading Dashboard...</p>;
-    }
+   if (isAdminLoading) {
+    return (
+        <div className="flex justify-center items-center h-screen">
+            <p className="text-2xl font-bold">Loading...</p>
+        </div>
+    );
+}
 
     return (
         <div className="flex flex-col md:flex-row min-h-screen bg-slate-50">
