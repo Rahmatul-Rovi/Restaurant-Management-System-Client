@@ -43,7 +43,7 @@ const DashboardLayout = () => {
                     {isAdmin ? (
                         <>
                             <li>
-                                <NavLink to="/dashboard/adminHome" className={({ isActive }) =>
+                                <NavLink to="/admin-dashboard/home" className={({ isActive }) =>
                                     `flex items-center gap-3 p-4 rounded-2xl transition-all ${isActive ? 'bg-[#ff6b08]' : 'hover:bg-slate-800 text-slate-400'}`
                                 }>
                                     <HiOutlineHome className="text-xl" /> Admin Home
@@ -51,7 +51,7 @@ const DashboardLayout = () => {
                             </li>
 
                             <li>
-                                <NavLink to="/dashboard/addItems" className={({ isActive }) =>
+                                <NavLink to="/admin-dashboard/add-items" className={({ isActive }) =>
                                     `flex items-center gap-3 p-4 rounded-2xl transition-all ${isActive ? 'bg-[#ff6b08]' : 'hover:bg-slate-800 text-slate-400'}`
                                 }>
                                     <HiOutlineViewGridAdd className="text-xl" /> Add Items
@@ -59,7 +59,7 @@ const DashboardLayout = () => {
                             </li>
 
                             <li>
-                                <NavLink to="/dashboard/manageItems" className={({ isActive }) =>
+                                <NavLink to="/admin-dashboard/manage-items" className={({ isActive }) =>
                                     `flex items-center gap-3 p-4 rounded-2xl transition-all ${isActive ? 'bg-[#ff6b08]' : 'hover:bg-slate-800 text-slate-400'}`
                                 }>
                                     <HiOutlineMenuAlt1 className="text-xl" /> Manage Items
@@ -67,7 +67,7 @@ const DashboardLayout = () => {
                             </li>
 
                             <li>
-                                <NavLink to="/dashboard/allUsers" className={({ isActive }) =>
+                                <NavLink to="/admin-dashboard/all-users" className={({ isActive }) =>
                                     `flex items-center gap-3 p-4 rounded-2xl transition-all ${isActive ? 'bg-[#ff6b08]' : 'hover:bg-slate-800 text-slate-400'}`
                                 }>
                                     <HiOutlineUsers className="text-xl" /> All Users
@@ -79,7 +79,7 @@ const DashboardLayout = () => {
                         /* 👤 USER MENU */
                         <>
                             <li>
-                                <NavLink to="/dashboard/userHome" className={({ isActive }) =>
+                                <NavLink to="/dashboard/user/home" className={({ isActive }) =>
                                     `flex items-center gap-3 p-4 rounded-2xl transition-all ${isActive ? 'bg-[#ff6b08]' : 'hover:bg-slate-800 text-slate-400'}`
                                 }>
                                     <HiOutlineUser className="text-xl" /> User Home
@@ -87,7 +87,7 @@ const DashboardLayout = () => {
                             </li>
 
                             <li>
-                                <NavLink to="/dashboard/myCart" className={({ isActive }) =>
+                                <NavLink to="/dashboard/user/cart" className={({ isActive }) =>
                                     `flex items-center gap-3 p-4 rounded-2xl transition-all ${isActive ? 'bg-[#ff6b08]' : 'hover:bg-slate-800 text-slate-400'}`
                                 }>
                                     <HiOutlineShoppingCart className="text-xl" /> My Cart
