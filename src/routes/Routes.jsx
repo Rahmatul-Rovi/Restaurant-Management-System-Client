@@ -7,13 +7,17 @@ import Menu from "../pages/Menu";
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
 import Cart from "../pages/Cart";
+
 import DashboardLayout from "../Layout/DashboardLayout";
+
 import PrivateRoute from "../routes/PrivateRoute";
-import AdminRoute from "../routes/AdminRoute"; // সিকিউরিটির জন্য
-import AllUsers from "../pages/Dashboard/Admin/AllUsers"; 
+import AdminRoute from "../routes/AdminRoute";
+
+import AllUsers from "../pages/Dashboard/Admin/AllUsers";
 import AddItems from "../pages/Dashboard/Admin/AddItems";
 import ManageItems from "../pages/Dashboard/Admin/ManageItems";
-import UserHome from "../pages/Dashboard/UserHome"; // ইউজার ড্যাশবোর্ডের জন্য
+
+import UserHome from "../pages/Dashboard/User/UserHome";
 
 export const router = createBrowserRouter([
     {
@@ -29,42 +33,65 @@ export const router = createBrowserRouter([
             { path: "/cart", element: <Cart /> }
         ],
     },
+
+    // 🔐 USER DASHBOARD
     {
-        path: "dashboard",
-        element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+        path: "/dashboard",
+        element: (
+            <PrivateRoute>
+                <DashboardLayout />
+            </PrivateRoute>
+        ),
         children: [
-            // ১. ড্যাশবোর্ডের ডিফল্ট পেজ: সব ইউজার এখানে ল্যান্ড করবে
             {
                 index: true,
-                element: <Navigate to="/dashboard/userHome" replace />
+                element: <Navigate to="/dashboard/user/home" replace />
             },
+            {
+                path: "user/home",
+                element: <UserHome />
+            },
+            {
+                path: "user/cart",
+                element: <Cart />
+            }
+        ]
+    },
 
-            // ২. --- User Routes (এখানে শুধু ইউজারের পেজগুলো দাও) ---
+    // 👑 ADMIN DASHBOARD (SEPARATE)
+    {
+        path: "/admin-dashboard",
+        element: (
+            <PrivateRoute>
+                <AdminRoute>
+                    <DashboardLayout />
+                </AdminRoute>
+            </PrivateRoute>
+        ),
+        children: [
             {
-                path: "userHome",
-                element: <UserHome /> 
+                index: true,
+                element: <Navigate to="/admin-dashboard/home" replace />
             },
             {
-                path: "myCart",
-                element: <Cart /> 
-            },
-
-            // ৩. --- Admin Routes (এখানে শুধু অ্যাডমিনের পেজগুলো দাও, অবশ্যই AdminRoute দিয়ে মুড়িয়ে দিবে) ---
-            {
-                path: "adminHome",
-                element: <AdminRoute><div className="p-10 text-2xl font-bold">Admin Dashboard</div></AdminRoute>
+                path: "home",
+                element: (
+                    <div className="p-10 text-2xl font-bold text-orange-600">
+                        Welcome Admin Dashboard 👑
+                    </div>
+                )
             },
             {
-                path: "allUsers",
-                element: <AdminRoute><AllUsers /></AdminRoute>
+                path: "all-users",
+                element: <AllUsers />
             },
             {
-                path: "addItems",
-                element: <AdminRoute><AddItems /></AdminRoute>
+                path: "add-items",
+                element: <AddItems />
             },
             {
-                path: "manageItems",
-                element: <AdminRoute><ManageItems /></AdminRoute>
+                path: "manage-items",
+                element: <ManageItems />
             }
         ]
     }

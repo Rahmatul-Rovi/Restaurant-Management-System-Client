@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { AuthContext } from '../../providers/AuthProvider';
+import { AuthContext } from '../../../providers/AuthProvider';
 import { HiOutlineMail, HiOutlineUserCircle, HiOutlineBadgeCheck } from "react-icons/hi";
 
 const UserHome = () => {
