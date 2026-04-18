@@ -3,10 +3,12 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { HiOutlineShoppingBag, HiOutlineSearch } from "react-icons/hi";
 import { AuthContext } from "../providers/AuthProvider";
 import useCart from "../hooks/useCart";
+import useAdmin from "../hooks/useAdmin";
 
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
     const navigate = useNavigate();
+    const [isAdmin] = useAdmin();
 
     const [cart] = useCart();
 
@@ -31,7 +33,8 @@ const Navbar = () => {
             {user && (
             <li>
                 <NavLink 
-                    to="/dashboard" 
+                    
+                    to={isAdmin ? "/admin-dashboard/home" : "/dashboard/user/home"} 
                     className={({ isActive }) => isActive ? "text-[#ff6b08] font-bold" : "hover:text-[#ff6b08] transition-colors"}
                 >
                     Dashboard
