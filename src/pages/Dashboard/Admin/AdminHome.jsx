@@ -1,24 +1,61 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../../providers/AuthProvider";
 import { HiOutlinePencil, HiOutlineCheck, HiOutlineUserCircle } from "react-icons/hi";
+import Swal from 'sweetalert2'; // SweetAlert import
 
 const AdminHome = () => {
-    const { user } = useContext(AuthContext);
+    const { user, loading } = useContext(AuthContext); // 'loading' ta context theke anbe
     const [isEditing, setIsEditing] = useState(false);
     
-    // ফর্ম ডাটা স্টেট
+    // Initial state set kora
     const [formData, setFormData] = useState({
-        name: user?.displayName || "Admin Name",
-        email: user?.email || "admin@example.com",
+        name: "",
+        email: "",
+        phone: ""
     });
+
+    // User load hole data update kora
+    useEffect(() => {
+        if (user) {
+            setFormData({
+                name: user.displayName || "Admin",
+                email: user.email || "admin@example.com",
+                phone: user.phoneNumber || "" // Firebase auth e phone thakle
+            });
+        }
+    }, [user]);
 
     const handleUpdate = (e) => {
         e.preventDefault();
-        // 🔥 এখানে তোমার ব্যাকেন্ড API কল হবে (PATCH route)
-        console.log("Updated Data:", formData);
-        setIsEditing(false);
-        alert("Profile Updated Successfully!");
+        
+        // SweetAlert implementation
+        Swal.fire({
+            title: 'Updating...',
+            text: 'Please wait while we update your profile.',
+            icon: 'info',
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+                // 🔥 Eikhane tomar PATCH API call hobe
+                console.log("Updated Data:", formData);
+                
+                // Simulate API call
+                setTimeout(() => {
+                    setIsEditing(false);
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Profile Updated Successfully!',
+                        icon: 'success',
+                        confirmButtonColor: '#ff6b08'
+                    });
+                }, 1000);
+            }
+        });
     };
+
+    if (loading) {
+        return <div className="text-center p-10">Loading Profile...</div>;
+    }
 
     return (
         <div className="max-w-4xl mx-auto p-6">
@@ -27,7 +64,11 @@ const AdminHome = () => {
             <div className="bg-white shadow-lg rounded-3xl p-8 border border-slate-100">
                 <div className="flex items-center gap-6 mb-8">
                     {user?.photoURL ? (
-                        <img src={user.photoURL} alt="Profile" className="w-24 h-24 rounded-full border-4 border-[#ff6b08]" />
+                        <img 
+                            src={user.photoURL} 
+                            alt="Profile" 
+                            className="w-24 h-24 rounded-full border-4 border-[#ff6b08] object-cover" 
+                        />
                     ) : (
                         <HiOutlineUserCircle className="text-8xl text-slate-300" />
                     )}
@@ -40,30 +81,37 @@ const AdminHome = () => {
                     </div>
                 </div>
 
-                {/* এডিট ফর্ম বা ভিউ */}
                 {isEditing ? (
                     <form onSubmit={handleUpdate} className="space-y-4">
+                        <label className="block text-sm font-medium">Full Name</label>
                         <input 
                             type="text" 
                             className="w-full p-3 border rounded-xl"
                             value={formData.name}
                             onChange={(e) => setFormData({...formData, name: e.target.value})}
                         />
+                        <label className="block text-sm font-medium">Phone</label>
                         <input 
                             type="text" 
                             className="w-full p-3 border rounded-xl"
+                            placeholder="Enter your phone number"
                             value={formData.phone}
                             onChange={(e) => setFormData({...formData, phone: e.target.value})}
                         />
-                        <button className="bg-green-600 text-white px-6 py-2 rounded-xl flex items-center gap-2">
-                            <HiOutlineCheck /> Save Changes
-                        </button>
+                        <div className="flex gap-4">
+                            <button type="submit" className="bg-green-600 text-white px-6 py-2 rounded-xl flex items-center gap-2 hover:bg-green-700">
+                                <HiOutlineCheck /> Save Changes
+                            </button>
+                            <button type="button" onClick={() => setIsEditing(false)} className="bg-slate-200 px-6 py-2 rounded-xl">
+                                Cancel
+                            </button>
+                        </div>
                     </form>
                 ) : (
                     <div className="space-y-4 border-t pt-6">
                         <p className="text-slate-600"><strong>Full Name:</strong> {formData.name}</p>
                         <p className="text-slate-600"><strong>Email Address:</strong> {formData.email}</p>
-                        <p className="text-slate-600"><strong>Phone:</strong> {formData.phone}</p>
+                        <p className="text-slate-600"><strong>Phone:</strong> {formData.phone || "Not provided"}</p>
                         
                         <button 
                             onClick={() => setIsEditing(true)}
