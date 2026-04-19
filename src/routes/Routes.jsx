@@ -18,6 +18,7 @@ import AddItems from "../pages/Dashboard/Admin/AddItems";
 import ManageItems from "../pages/Dashboard/Admin/ManageItems";
 
 import UserHome from "../pages/Dashboard/User/UserHome";
+import AdminHome from "../pages/Dashboard/Admin/AdminHome";
 
 export const router = createBrowserRouter([
     {
@@ -75,11 +76,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "home",
-                element: (
-                    <div className="p-10 text-2xl font-bold text-orange-600">
-                        Welcome Admin Dashboard 👑
-                    </div>
-                )
+                element: <AdminHome/>
             },
             {
                 path: "all-users",

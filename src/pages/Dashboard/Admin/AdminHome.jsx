@@ -10,7 +10,6 @@ const AdminHome = () => {
     const [formData, setFormData] = useState({
         name: user?.displayName || "Admin Name",
         email: user?.email || "admin@example.com",
-        phone: "01XXXXXXXXX" // ব্যাকেন্ড থেকে ডাটা আনলে এখানে বসবে
     });
 
     const handleUpdate = (e) => {
