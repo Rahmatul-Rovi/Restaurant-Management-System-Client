@@ -1,178 +1,172 @@
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../../providers/AuthProvider";
-import { HiOutlinePencil, HiOutlineCheck, HiOutlineUserCircle } from "react-icons/hi";
+import { HiOutlinePencil, HiOutlineCheck, HiOutlineUserCircle, HiOutlineCloudUpload } from "react-icons/hi";
 import Swal from "sweetalert2";
+
+// 🔥 ImgBB API Key (এভাবে রাখা ভালো, তবে পরে .env ফাইলে নিয়ে যেও)
+const image_hosting_key = "YOUR_IMGBB_API_KEY"; 
+const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const AdminHome = () => {
     const { user, loading } = useContext(AuthContext);
-
     const [isEditing, setIsEditing] = useState(false);
+    const [uploading, setUploading] = useState(false);
 
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         phone: "",
-        photo: ""
+        photoURL: ""
     });
 
     // ✅ Load user data
     useEffect(() => {
-        if (user) {
-            setFormData({
-                name: user.displayName || user.name || "Admin",
-                email: user.email,
-                phone: user.phoneNumber || "",
-                photo: user.photoURL || ""
-            });
+        if (user?.email) {
+            fetch(`http://localhost:5000/users/${user.email}`)
+                .then(res => res.json())
+                .then(data => {
+                    setFormData({
+                        name: data.name || user.displayName || "Admin",
+                        email: data.email || user.email,
+                        phone: data.phone || "",
+                        // যদি গুগল দিয়ে লগইন হয় আর ডাটাবেজে ছবি না থাকে, তবে গুগল পিকচার নিবে
+                        photoURL: data.photoURL || user.photoURL || "" 
+                    });
+                })
+                .catch(err => console.error("Error loading user:", err));
         }
     }, [user]);
 
-    // ✅ HANDLE UPDATE (REAL API)
+    // ✅ IMAGE UPLOAD HANDLER (ImgBB)
+    const handleImageUpload = async (e) => {
+        const imageFile = e.target.files[0];
+        if (!imageFile) return;
+
+        setUploading(true);
+        const imgFormData = new FormData();
+        imgFormData.append("image", imageFile);
+
+        try {
+            const res = await fetch(image_hosting_api, {
+                method: "POST",
+                body: imgFormData
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                setFormData({ ...formData, photoURL: data.data.display_url });
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Image uploaded successfully',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        } catch (error) {
+            console.error("Upload error", error);
+            Swal.fire("Error", "Image upload failed", "error");
+        } finally {
+            setUploading(false);
+        }
+    };
+
+    // ✅ PROFILE UPDATE HANDLER
     const handleUpdate = async (e) => {
         e.preventDefault();
-
-        Swal.fire({
-            title: "Updating...",
-            text: "Please wait",
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
+        Swal.fire({ title: "Updating...", didOpen: () => Swal.showLoading() });
 
         try {
             const res = await fetch(`http://localhost:5000/users/update/${user.email}`, {
                 method: "PATCH",
-                headers: {
-                    "content-type": "application/json"
-                },
-                body: JSON.stringify({
-                    name: formData.name,
-                    phone: formData.phone,
-                    photoURL: formData.photo
-                })
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify(formData)
             });
 
             const data = await res.json();
-
-            if (data.modifiedCount > 0) {
+            if (data.modifiedCount > 0 || data.matchedCount > 0) {
                 setIsEditing(false);
-
-                Swal.fire({
-                    icon: "success",
-                    title: "Profile Updated!",
-                    confirmButtonColor: "#ff6b08"
-                });
-            } else {
-                Swal.fire("No changes detected", "", "info");
+                Swal.fire("Success!", "Profile Updated Successfully!", "success");
             }
-
         } catch (error) {
-            console.error("UPDATE ERROR:", error);
-
-            Swal.fire({
-                icon: "error",
-                title: "Update Failed",
-                text: "Something went wrong"
-            });
+            Swal.fire("Error", "Update failed", "error");
         }
     };
 
-    if (loading) {
-        return <div className="text-center p-10">Loading Profile...</div>;
-    }
+    if (loading) return <div className="text-center p-10 font-bold">Loading...</div>;
 
     return (
         <div className="max-w-4xl mx-auto p-6">
             <h2 className="text-3xl font-bold mb-8">Admin Profile 👑</h2>
 
-            <div className="bg-white shadow-lg rounded-3xl p-8 border border-slate-100">
+            <div className="bg-white shadow-xl rounded-3xl p-8 border border-slate-100">
                 
-                {/* PROFILE TOP */}
-                <div className="flex items-center gap-6 mb-8">
-                    {formData.photo ? (
+                {/* PROFILE HEADER */}
+                <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
+                    <div className="relative group">
                         <img
-                            src={formData.photo}
+                            src={formData.photoURL || "https://i.ibb.co/L1Npq9B/placeholder.png"}
                             alt="Profile"
-                            className="w-24 h-24 rounded-full border-4 border-[#ff6b08] object-cover"
+                            className="w-32 h-32 rounded-full border-4 border-[#ff6b08] object-cover shadow-lg"
                         />
-                    ) : (
-                        <HiOutlineUserCircle className="text-8xl text-slate-300" />
-                    )}
+                        {isEditing && (
+                            <label className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-all text-white text-xs">
+                                <HiOutlineCloudUpload className="text-2xl" />
+                                <span>{uploading ? "Uploading..." : "Change Photo"}</span>
+                                <input type="file" className="hidden" onChange={handleImageUpload} disabled={uploading} />
+                            </label>
+                        )}
+                    </div>
 
-                    <div>
+                    <div className="text-center md:text-left">
                         <h3 className="text-2xl font-bold">{formData.name}</h3>
                         <p className="text-slate-500">{formData.email}</p>
-
-                        <span className="bg-orange-100 text-[#ff6b08] px-3 py-1 rounded-full text-xs font-bold mt-2 inline-block">
-                            SUPER ADMIN
-                        </span>
+                        <span className="bg-orange-100 text-[#ff6b08] px-4 py-1 rounded-full text-xs font-bold mt-2 inline-block">SUPER ADMIN</span>
                     </div>
                 </div>
 
-                {/* EDIT MODE */}
+                {/* EDIT FORM vs INFO VIEW */}
                 {isEditing ? (
                     <form onSubmit={handleUpdate} className="space-y-4">
-
-                        <label className="block text-sm font-medium">Full Name</label>
-                        <input
-                            type="text"
-                            className="w-full p-3 border rounded-xl"
-                            value={formData.name}
-                            onChange={(e) =>
-                                setFormData({ ...formData, name: e.target.value })
-                            }
-                        />
-
-                        <label className="block text-sm font-medium">Phone</label>
-                        <input
-                            type="text"
-                            className="w-full p-3 border rounded-xl"
-                            placeholder="Enter your phone number"
-                            value={formData.phone}
-                            onChange={(e) =>
-                                setFormData({ ...formData, phone: e.target.value })
-                            }
-                        />
-
-                        <label className="block text-sm font-medium">Photo URL</label>
-                        <input
-                            type="text"
-                            className="w-full p-3 border rounded-xl"
-                            placeholder="Paste image URL"
-                            value={formData.photo}
-                            onChange={(e) =>
-                                setFormData({ ...formData, photo: e.target.value })
-                            }
-                        />
-
-                        <div className="flex gap-4">
-                            <button
-                                type="submit"
-                                className="bg-green-600 text-white px-6 py-2 rounded-xl flex items-center gap-2 hover:bg-green-700"
-                            >
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-bold text-slate-600 mb-1">Name</label>
+                                <input
+                                    type="text"
+                                    className="w-full p-3 border rounded-xl"
+                                    value={formData.name}
+                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-bold text-slate-600 mb-1">Phone</label>
+                                <input
+                                    type="text"
+                                    className="w-full p-3 border rounded-xl"
+                                    value={formData.phone}
+                                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                />
+                            </div>
+                        </div>
+                        
+                        <div className="flex gap-3 pt-4">
+                            <button type="submit" className="bg-green-600 text-white px-6 py-2 rounded-xl flex items-center gap-2">
                                 <HiOutlineCheck /> Save Changes
                             </button>
-
-                            <button
-                                type="button"
-                                onClick={() => setIsEditing(false)}
-                                className="bg-slate-200 px-6 py-2 rounded-xl"
-                            >
-                                Cancel
-                            </button>
+                            <button type="button" onClick={() => setIsEditing(false)} className="bg-slate-200 px-6 py-2 rounded-xl">Cancel</button>
                         </div>
                     </form>
                 ) : (
-                    // VIEW MODE
                     <div className="space-y-4 border-t pt-6">
-                        <p><strong>Full Name:</strong> {formData.name}</p>
-                        <p><strong>Email:</strong> {formData.email}</p>
-                        <p><strong>Phone:</strong> {formData.phone || "Not provided"}</p>
-
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-slate-700">
+                            <p><strong>Name:</strong> {formData.name}</p>
+                            <p><strong>Email:</strong> {formData.email}</p>
+                            <p><strong>Phone:</strong> {formData.phone || "Not set"}</p>
+                        </div>
                         <button
                             onClick={() => setIsEditing(true)}
-                            className="bg-[#ff6b08] text-white px-6 py-2 rounded-xl flex items-center gap-2 hover:bg-orange-700"
+                            className="bg-[#ff6b08] text-white px-8 py-3 rounded-xl flex items-center gap-2 hover:bg-orange-700"
                         >
                             <HiOutlinePencil /> Edit Profile
                         </button>
