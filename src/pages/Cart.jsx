@@ -84,9 +84,12 @@ const Cart = () => {
                                 <span className="text-[#ff6b08]">৳{totalPrice.toFixed(2)}</span>
                             </div>
                         </div>
-                        <button className="btn bg-[#ff6b08] hover:bg-slate-900 border-none w-full text-white font-bold rounded-full py-4 shadow-lg shadow-orange-100">
+                        <Link to="/checkout">
+                         <button className="btn bg-[#ff6b08] hover:bg-slate-900 border-none w-full text-white font-bold rounded-full py-4 shadow-lg shadow-orange-100">
                             Proceed to Checkout
                         </button>
+                        </Link>
+                       
                     </div>
                 </div>
             ) : (

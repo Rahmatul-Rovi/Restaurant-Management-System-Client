@@ -19,6 +19,7 @@ import ManageItems from "../pages/Dashboard/Admin/ManageItems";
 
 import UserHome from "../pages/Dashboard/User/UserHome";
 import AdminHome from "../pages/Dashboard/Admin/AdminHome";
+import Checkout from "../pages/Dashboard/User/Checkout";
 
 export const router = createBrowserRouter([
     {
@@ -55,6 +56,10 @@ export const router = createBrowserRouter([
             {
                 path: "user/cart",
                 element: <Cart />
+            },
+            {
+                path: "checkout",
+                element: <Checkout/>
             }
         ]
     },
