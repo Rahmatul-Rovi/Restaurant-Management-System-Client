@@ -1,16 +1,11 @@
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../../providers/AuthProvider";
-import { HiOutlineMail, HiOutlineUserCircle, HiOutlineBadgeCheck, HiOutlinePencil, HiOutlineCheck, HiOutlineCloudUpload, HiOutlinePhone } from "react-icons/hi";
+import { HiOutlineMail, HiOutlineUserCircle, HiOutlineBadgeCheck, HiOutlinePencil, HiOutlineCheck, HiOutlinePhone } from "react-icons/hi";
 import Swal from "sweetalert2";
-
-// 🔥 ImgBB API Key (তোমার কি-টা এখানে বসাবে)
-const image_hosting_key = "YOUR_IMGBB_API_KEY"; 
-const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const UserHome = () => {
     const { user, loading: authLoading } = useContext(AuthContext);
     const [isEditing, setIsEditing] = useState(false);
-    const [uploading, setUploading] = useState(false);
     
     const [userData, setUserData] = useState({
         name: "",
@@ -19,55 +14,29 @@ const UserHome = () => {
         photoURL: ""
     });
 
-    // ✅ ডাটাবেজ থেকে ইউজারের লেটেস্ট তথ্য আনা
-    useEffect(() => {
-    if (user?.email) {
-        fetch(`http://localhost:5000/users/${user.email}`)
-            .then(res => res.json())
-            .then(data => {
-                setUserData({
-                    name: data.name || user.displayName || "User",
-                    email: data.email || user.email,
-                    phone: data.phone || "",
-                    // যদি ডাটাবেজে ছবি থাকে সেটা দেখাবে, না থাকলে গুগলের ছবি, না থাকলে প্লেসহোল্ডার
-                    photoURL: data.photoURL || user.photoURL || "https://i.ibb.co/4pDNDk1/avatar-placeholder.png"
+    // ✅ ডাটাবেজ থেকে তথ্য আনার ফাংশন
+    const fetchUserData = () => {
+        if (user?.email) {
+            fetch(`http://localhost:5000/users/${user.email}`)
+                .then(res => res.json())
+                .then(data => {
+                    setUserData({
+                        name: data.name || user.displayName || "User",
+                        email: data.email || user.email,
+                        phone: data.phone || "",
+                        // 🔥 প্রাধান্য: ডাটাবেজের ছবি > Google এর ছবি > ডিফল্ট ছবি
+                        photoURL: data.photoURL || user.photoURL || "https://i.ibb.co/4pDNDk1/avatar-placeholder.png"
+                    });
+                })
+                .catch(err => {
+                    console.error("Error fetching user data:", err);
                 });
-            })
-            .catch(err => {
-                console.error("Error fetching user data:", err);
-                // যদি এপিআই ফেইল করে তবুও যেন গুগলের ছবিটা অন্তত দেখায়
-                setUserData(prev => ({
-                    ...prev,
-                    name: user.displayName,
-                    email: user.email,
-                    photoURL: user.photoURL
-                }));
-            });
-    }
-}, [user]);
-
-    // ✅ ইমেজ আপলোড হ্যান্ডলার (ImgBB)
-    const handleImageUpload = async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        setUploading(true);
-        const formData = new FormData();
-        formData.append("image", file);
-
-        try {
-            const res = await fetch(image_hosting_api, { method: "POST", body: formData });
-            const data = await res.json();
-            if (data.success) {
-                setUserData({ ...userData, photoURL: data.data.display_url });
-                Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Photo Uploaded!', showConfirmButton: false, timer: 1500 });
-            }
-        } catch (error) {
-            Swal.fire("Error", "Upload failed", "error");
-        } finally {
-            setUploading(false);
         }
     };
+
+    useEffect(() => {
+        fetchUserData();
+    }, [user]);
 
     // ✅ প্রোফাইল আপডেট (Database Patch)
     const handleUpdate = async (e) => {
@@ -80,22 +49,24 @@ const UserHome = () => {
                 headers: { "content-type": "application/json" },
                 body: JSON.stringify({
                     name: userData.name,
-                    phone: userData.userData,
-                    photoURL: userData.photoURL
+                    phone: userData.phone,
+                    // 🔥 এখানে সবসময় Google থেকে আসা লেটেস্ট ছবিটাই ডাটাবেজে পাঠিয়ে দিচ্ছি
+                    photoURL: user.photoURL || userData.photoURL 
                 })
             });
 
             const data = await res.json();
             if (data.modifiedCount > 0 || data.matchedCount > 0) {
                 setIsEditing(false);
-                Swal.fire("Updated!", "Your profile information has been saved.", "success");
+                fetchUserData(); // ডাটা রি-ফেচ
+                Swal.fire("Updated!", "Your Google profile info has been synced.", "success");
             }
         } catch (error) {
             Swal.fire("Error", "Could not update profile", "error");
         }
     };
 
-    if (authLoading) return <div className="p-20 text-center font-bold">Loading...</div>;
+    if (authLoading) return <div className="flex justify-center items-center h-screen font-bold text-orange-500">Loading...</div>;
 
     return (
         <div className="p-8 bg-slate-50 min-h-screen">
@@ -110,7 +81,7 @@ const UserHome = () => {
             {/* Profile Card Section */}
             <div className="max-w-2xl bg-white rounded-[2.5rem] shadow-xl shadow-orange-100 border border-orange-50 overflow-hidden transition-all">
                 
-                {/* Banner with Image Upload */}
+                {/* Banner Section (No Upload needed as it's Google Pic) */}
                 <div className="bg-[#ff6b08] h-32 w-full relative">
                     <div className="absolute -bottom-12 left-10 group">
                         <div className="relative">
@@ -120,21 +91,21 @@ const UserHome = () => {
                                 className="w-28 h-28 rounded-3xl border-4 border-white object-cover shadow-lg bg-white"
                                 onError={(e) => e.target.src = "https://i.ibb.co/4pDNDk1/avatar-placeholder.png"}
                             />
-                            {isEditing && (
-                                <label className="absolute inset-0 bg-black/40 rounded-3xl flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 cursor-pointer transition-all border-2 border-dashed border-white/50">
-                                    <HiOutlineCloudUpload className="text-2xl" />
-                                    <span className="text-[10px] font-bold uppercase">{uploading ? "..." : "Upload"}</span>
-                                    <input type="file" className="hidden" onChange={handleImageUpload} disabled={uploading} />
-                                </label>
-                            )}
                         </div>
                     </div>
                 </div>
 
                 <div className="pt-16 pb-10 px-10">
+                    {/* একটি ছোট নোট যাতে ইউজার বুঝে ছবি কোত্থেকে আসছে */}
+                    {!isEditing && (
+                        <p className="text-[10px] font-bold text-orange-500 uppercase tracking-widest mb-4 italic">
+                            * Profile picture synced with Google Account
+                        </p>
+                    )}
+
                     {isEditing ? (
                         /* --- EDIT MODE FORM --- */
-                        <form onSubmit={handleUpdate} className="space-y-5 animate-fadeIn">
+                        <form onSubmit={handleUpdate} className="space-y-5">
                             <div className="grid grid-cols-1 gap-4">
                                 <div>
                                     <label className="text-xs font-bold text-slate-400 uppercase ml-1">Full Name</label>
@@ -150,8 +121,8 @@ const UserHome = () => {
                                     <label className="text-xs font-bold text-slate-400 uppercase ml-1">Phone Number</label>
                                     <input 
                                         type="text" 
-                                        placeholder="017XXXXXXXX"
                                         className="w-full p-3 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-400"
+                                        placeholder="Enter Phone Number"
                                         value={userData.phone}
                                         onChange={(e) => setUserData({...userData, phone: e.target.value})}
                                     />
