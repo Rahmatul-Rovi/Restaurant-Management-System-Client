@@ -2,15 +2,15 @@ import { useContext } from "react";
 import { AuthContext } from "../../../providers/AuthProvider";
 import { HiOutlineLocationMarker, HiOutlinePhone, HiOutlineUser, HiOutlineShoppingBag, HiOutlineArrowRight } from "react-icons/hi";
 import Swal from "sweetalert2";
-import useCart from "../../../hooks/useCart"; // কার্ট হুক ইমপোর্ট করলাম
+import useCart from "../../../hooks/useCart"; 
 
 const Checkout = () => {
     const { user } = useContext(AuthContext);
-    const [cart] = useCart(); // সরাসরি আপনার কার্ট ডাটা নিয়ে আসলাম
+    const [cart] = useCart(); 
 
     // কার্ট থেকে ডায়নামিক ক্যালকুলেশন
     const subtotal = cart.reduce((total, item) => total + item.price, 0);
-    const shipping = cart.length > 0 ? 50 : 0; // কার্ট খালি থাকলে শিপিং ০
+    const shipping = cart.length > 0 ? 50 : 0; 
     const total = subtotal + shipping;
 
     const handleCheckout = (e) => {
@@ -19,32 +19,46 @@ const Checkout = () => {
         const address = form.address.value;
         const phone = form.phone.value;
 
-        // চেকআউট ডাটা অবজেক্ট
         const orderDetails = {
             customerName: user?.displayName,
             email: user?.email,
             phone,
             address,
-            cartItems: cart.map(item => ({ name: item.name, price: item.price, id: item._id })), // সব আইটেম লিস্ট
+            cartItems: cart.map(item => ({ name: item.name, price: item.price, id: item._id })), 
             totalAmount: total,
             totalQuantity: cart.length,
             currency: 'BDT',
             status: 'Pending'
         };
 
-        console.log("Real Cart Data for SSLCommerz:", orderDetails);
-
         Swal.fire({
-            title: "Confirm Payment?",
-            text: `You are paying ৳${total} for ${cart.length} items.`,
+            title: "Confirm Order?",
+            text: `You are paying ৳${total.toFixed(2)} via SSLCommerz`,
             icon: "question",
             showCancelButton: true,
             confirmButtonColor: "#ff6b08",
             confirmButtonText: "Yes, Pay Now"
         }).then((result) => {
             if (result.isConfirmed) {
-                // এখানে ব্যাকএন্ডে হিট করবো
-                Swal.fire("Success!", "Connecting to Payment Gateway...", "success");
+                // --- SSLCommerz Backend Integration ---
+                fetch("http://localhost:5000/api/order", {
+                    method: "POST",
+                    headers: { "content-type": "application/json" },
+                    body: JSON.stringify(orderDetails)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data?.url) {
+                        // ইউজারকে সরাসরি পেমেন্ট গেটওয়েতে রিডাইরেক্ট করবে
+                        window.location.replace(data.url);
+                    } else {
+                        Swal.fire("Error!", "Something went wrong with the payment gateway.", "error");
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    Swal.fire("Error!", "Failed to connect to the server.", "error");
+                });
             }
         });
     };
@@ -148,9 +162,12 @@ const Checkout = () => {
                         >
                             Confirm & Pay <HiOutlineArrowRight className="group-hover:translate-x-1 transition-transform" />
                         </button>
+                        
+                        <p className="text-[10px] text-center mt-4 text-slate-500 uppercase tracking-widest font-bold">
+                             Secured by SSLCommerz
+                        </p>
                     </div>
                 </div>
-
             </div>
         </div>
     );
