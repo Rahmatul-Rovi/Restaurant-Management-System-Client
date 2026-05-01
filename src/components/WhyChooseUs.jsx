@@ -28,23 +28,23 @@ const WhyChooseUs = () => {
                 {features.map(f => (
                     <div 
                         key={f.id} 
-                        className="group relative p-10 bg-slate-900 rounded-[3rem] text-center transition-all duration-500 hover:shadow-[0_20px_50px_rgba(255,107,8,0.2)] border-b-4 border-transparent hover:border-[#ff6b08]"
+                        className="group p-10 bg-orange-50 rounded-[3rem] text-center border border-orange-100 transition-all duration-500 hover:bg-white hover:shadow-[0_20px_50px_rgba(255,107,8,0.1)] hover:-translate-y-2"
                     >
-                        {/* আইকন বক্স - ডার্ক ব্যাকগ্রাউন্ডে অরেঞ্জ গ্লো */}
-                        <div className="w-24 h-24 rounded-[2rem] bg-slate-800 flex items-center justify-center mx-auto mb-8 shadow-inner group-hover:bg-[#ff6b08]/10 transition-colors duration-500">
+                        {/* আইকন বক্স - সাদার ওপর হালকা অরেঞ্জ আভা */}
+                        <div className="w-24 h-24 rounded-[2rem] bg-white flex items-center justify-center mx-auto mb-8 shadow-sm group-hover:scale-110 transition-transform duration-500">
                             {f.icon}
                         </div>
                         
-                        {/* টেক্সট - পিওর হোয়াইট আর স্লিম ফন্ট */}
-                        <h3 className="text-2xl font-black text-white mb-4 tracking-tight">
+                        {/* টেক্সট - ডার্ক স্লট কালার যা হালকা অরেঞ্জের ওপর দারুণ ফুটে ওঠে */}
+                        <h3 className="text-2xl font-black text-slate-800 mb-4 tracking-tight">
                             {f.title}
                         </h3>
-                        <p className="text-slate-400 leading-relaxed font-medium px-4">
+                        <p className="text-slate-500 leading-relaxed font-medium px-4">
                             {f.desc}
                         </p>
 
-                        {/* ছোট একটা ডেকোরেশন লাইন - হোভারে আসবে */}
-                        <div className="absolute top-10 right-10 w-2 h-2 rounded-full bg-[#ff6b08] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        {/* নিচে ছোট্ট একটা ডিজাইন লাইন */}
+                        <div className="w-12 h-1 bg-orange-200 mx-auto mt-6 rounded-full group-hover:w-20 group-hover:bg-[#ff6b08] transition-all duration-500"></div>
                     </div>
                 ))}
             </div>

@@ -20,7 +20,7 @@ const Testimonials = () => {
                         key={r.id} 
                         className="bg-slate-50 p-10 rounded-[3rem] border border-slate-200/60 hover:bg-white hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] transition-all duration-500 group"
                     >
-                        {/* কোটেশন মার্ক আইকন */}
+                        {/* Cottation mark icon*/}
                         <div className="text-4xl text-slate-200 font-serif leading-none mb-4 group-hover:text-orange-200 transition-colors">“</div>
                         
                         <p className="text-slate-600 leading-relaxed italic mb-8 relative z-10">
