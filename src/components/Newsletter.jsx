@@ -1,7 +1,7 @@
 const Newsletter = () => {
     return (
         <div className="my-24 py-16 px-8 bg-orange-50 rounded-[3rem] text-center border border-orange-100 shadow-sm">
-            {/* টেক্সট কালার এখন ডার্ক স্লট এবং অরেঞ্জ মিক্স */}
+
             <h2 className="text-4xl font-black mb-4 text-slate-800">
                 Don't miss our <span className="text-[#ff6b08]">best deals!</span>
             </h2>
@@ -21,7 +21,7 @@ const Newsletter = () => {
                 </button>
             </form>
             
-            {/* ছোট একটা ডেকোরেশন */}
+            {/* Small Decoration */}
             <p className="mt-6 text-xs text-slate-400 font-medium">
                 * We hate spam as much as you do.
             </p>
