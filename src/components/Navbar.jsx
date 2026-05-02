@@ -27,7 +27,7 @@ const Navbar = () => {
         <>
             <li><NavLink to="/" className={({ isActive }) => isActive ? "text-[#ff6b08] font-bold" : "hover:text-[#ff6b08] transition-colors"}>Home</NavLink></li>
             <li><NavLink to="/menu" className={({ isActive }) => isActive ? "text-[#ff6b08] font-bold" : "hover:text-[#ff6b08] transition-colors"}>Menu</NavLink></li>
-            <li><NavLink to="/offers" className={({ isActive }) => isActive ? "text-[#ff6b08] font-bold" : "hover:text-[#ff6b08] transition-colors"}>Offers</NavLink></li>
+            <li><NavLink to="/coverage" className={({ isActive }) => isActive ? "text-[#ff6b08] font-bold" : "hover:text-[#ff6b08] transition-colors"}>Coverage</NavLink></li>
             <li><NavLink to="/contact" className={({ isActive }) => isActive ? "text-[#ff6b08] font-bold" : "hover:text-[#ff6b08] transition-colors"}>Contact</NavLink></li>
 
             {user && (

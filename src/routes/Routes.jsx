@@ -20,6 +20,7 @@ import ManageItems from "../pages/Dashboard/Admin/ManageItems";
 import UserHome from "../pages/Dashboard/User/UserHome";
 import AdminHome from "../pages/Dashboard/Admin/AdminHome";
 import Checkout from "../pages/Dashboard/User/Checkout";
+import Coverage from "../components/Coverage";
 
 export const router = createBrowserRouter([
     {
@@ -32,7 +33,8 @@ export const router = createBrowserRouter([
             { path: "/menu", element: <Menu /> },
             { path: "/signUp", element: <SignUp /> },
             { path: "/login", element: <Login /> },
-            { path: "/cart", element: <Cart /> }
+            { path: "/cart", element: <Cart /> },
+            {path: "/coverage", element: <Coverage/>}
         ],
     },
 
