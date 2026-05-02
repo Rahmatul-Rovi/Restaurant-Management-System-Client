@@ -21,6 +21,7 @@ import UserHome from "../pages/Dashboard/User/UserHome";
 import AdminHome from "../pages/Dashboard/Admin/AdminHome";
 import Checkout from "../pages/Dashboard/User/Checkout";
 import Coverage from "../components/Coverage";
+import Payment from "../pages/Payment";
 
 export const router = createBrowserRouter([
     {
@@ -34,7 +35,8 @@ export const router = createBrowserRouter([
             { path: "/signUp", element: <SignUp /> },
             { path: "/login", element: <Login /> },
             { path: "/cart", element: <Cart /> },
-            {path: "/coverage", element: <Coverage/>}
+            {path: "/coverage", element: <Coverage/>},
+            {path: "/payment", element: <Payment/>}
         ],
     },
 
