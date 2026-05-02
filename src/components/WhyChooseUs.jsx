@@ -30,12 +30,12 @@ const WhyChooseUs = () => {
                         key={f.id} 
                         className="group p-10 bg-orange-50 rounded-[3rem] text-center border border-orange-100 transition-all duration-500 hover:bg-white hover:shadow-[0_20px_50px_rgba(255,107,8,0.1)] hover:-translate-y-2"
                     >
-                        {/* আইকন বক্স - সাদার ওপর হালকা অরেঞ্জ আভা */}
+                        {/* Icon Box */}
                         <div className="w-24 h-24 rounded-[2rem] bg-white flex items-center justify-center mx-auto mb-8 shadow-sm group-hover:scale-110 transition-transform duration-500">
                             {f.icon}
                         </div>
                         
-                        {/* টেক্সট - ডার্ক স্লট কালার যা হালকা অরেঞ্জের ওপর দারুণ ফুটে ওঠে */}
+                        {/* Text- Dark slot color */}
                         <h3 className="text-2xl font-black text-slate-800 mb-4 tracking-tight">
                             {f.title}
                         </h3>
@@ -43,7 +43,7 @@ const WhyChooseUs = () => {
                             {f.desc}
                         </p>
 
-                        {/* নিচে ছোট্ট একটা ডিজাইন লাইন */}
+                        {/* Small Design Line */}
                         <div className="w-12 h-1 bg-orange-200 mx-auto mt-6 rounded-full group-hover:w-20 group-hover:bg-[#ff6b08] transition-all duration-500"></div>
                     </div>
                 ))}
