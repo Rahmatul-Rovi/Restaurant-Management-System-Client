@@ -1,10 +1,11 @@
 import { HiOutlineTrash } from 'react-icons/hi';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // useNavigate ইমপোর্ট করুন
 import useCart from '../hooks/useCart';
 import Swal from 'sweetalert2';
 
 const Cart = () => {
-    const [cart, refetch] = useCart(); // Cart data and refetch function
+    const [cart, refetch] = useCart(); 
+    const navigate = useNavigate(); // নেভিগেশন হুক
 
     // Calculate total price 
     const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
@@ -20,7 +21,6 @@ const Cart = () => {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                // Delete Api Call
                 fetch(`http://localhost:5000/carts/${id}`, {
                     method: 'DELETE'
                 })
@@ -40,6 +40,11 @@ const Cart = () => {
             }
         });
     }
+
+    // পেমেন্ট পেজে ডাটা সহ পাঠানোর ফাংশন
+    const handleProceedToCheckout = () => {
+        navigate('/dashboard/checkout', { state: { price: totalPrice } });
+    };
 
     return (
         <div className="pt-32 pb-16 px-6 max-w-7xl mx-auto min-h-screen">
@@ -84,11 +89,14 @@ const Cart = () => {
                                 <span className="text-[#ff6b08]">৳{totalPrice.toFixed(2)}</span>
                             </div>
                         </div>
-                        <Link to="/dashboard/checkout">
-                         <button className="btn bg-[#ff6b08] hover:bg-slate-900 border-none w-full text-white font-bold rounded-full py-4 shadow-lg shadow-orange-100">
+                        
+                        {/* বাটনটি এখন handleProceedToCheckout ফাংশন কল করবে */}
+                        <button 
+                            onClick={handleProceedToCheckout}
+                            className="btn bg-[#ff6b08] hover:bg-slate-900 border-none w-full text-white font-bold rounded-full py-4 shadow-lg shadow-orange-100"
+                        >
                             Proceed to Checkout
                         </button>
-                        </Link>
                        
                     </div>
                 </div>
