@@ -22,6 +22,7 @@ import AdminHome from "../pages/Dashboard/Admin/AdminHome";
 import Checkout from "../pages/Dashboard/User/Checkout";
 import Coverage from "../components/Coverage";
 import Payment from "../pages/Payment";
+import MyOrders from "../pages/Dashboard/User/MyOrders";
 
 export const router = createBrowserRouter([
     {
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
             {
                 path: "checkout",
                 element: <Payment/>
+            },
+            {
+                path: "Orders",
+                element: <MyOrders/>
             }
         ]
     },
