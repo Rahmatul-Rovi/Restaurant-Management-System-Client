@@ -65,3 +65,5 @@ const Checkout = ({ price }) => {
         </form>
     );
 };
+
+export default Checkout;
