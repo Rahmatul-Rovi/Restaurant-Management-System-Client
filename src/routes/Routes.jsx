@@ -23,6 +23,8 @@ import Checkout from "../pages/Dashboard/User/Checkout";
 import Coverage from "../components/Coverage";
 import Payment from "../pages/Payment";
 import MyOrders from "../pages/Dashboard/User/MyOrders";
+import ManageOrders from "../pages/Dashboard/Admin/ManageOrders";
+import OrderChart from "../pages/Dashboard/Admin/OrderChart";
 
 export const router = createBrowserRouter([
     {
@@ -103,6 +105,14 @@ export const router = createBrowserRouter([
             {
                 path: "manage-items",
                 element: <ManageItems />
+            },
+            {
+                path: "manage-orders",
+                element: <ManageOrders/>
+            },
+            {
+                path: "order-stats",
+                element: <OrderChart/>
             }
         ]
     }
