@@ -77,9 +77,6 @@ const Checkout = ({ price }) => {
 
                     if (saveData.insertedId || saveData.success) {
                         // ৩. পেমেন্ট সাকসেস হলে কার্ট ক্লিয়ার করা (নিশ্চিত করুন ব্যাকেন্ডে এই এপিআই আছে)
-                        await fetch(`http://localhost:5000/api/clear-cart?email=${user?.email}`, {
-                            method: 'DELETE'
-                        });
 
                         setProcessing(false);
                         Swal.fire({
