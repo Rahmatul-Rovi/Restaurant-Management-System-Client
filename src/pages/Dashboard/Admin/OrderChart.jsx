@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { 
-    AreaChart, Area, XAxis, YAxis, CartesianGrid, 
-    Tooltip, ResponsiveContainer, BarChart, Bar, Cell 
+    BarChart, Bar, XAxis, YAxis, CartesianGrid, 
+    Tooltip, ResponsiveContainer, Cell 
 } from "recharts";
 import { HiTrendingUp, HiCurrencyDollar, HiShoppingCart } from "react-icons/hi";
 
@@ -38,7 +38,10 @@ const OrderChart = () => {
                     return acc;
                 }, []);
 
+                // চার্ট ডেটা সেট করা
                 setChartData(formattedData);
+                
+                // স্ট্যাটাস কার্ডের ডেটা সেট করা
                 setStats({
                     totalRevenue: total.toFixed(2),
                     todayRevenue: today.toFixed(2),
@@ -48,63 +51,60 @@ const OrderChart = () => {
     }, []);
 
     return (
-        <div className="p-8 space-y-8">
-            {/* --- Stats Section --- */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-gradient-to-br from-indigo-500 to-indigo-600 p-6 rounded-[2rem] text-white shadow-xl shadow-indigo-100 flex items-center justify-between">
-                    <div>
-                        <p className="text-indigo-100 text-sm font-medium">Total Revenue</p>
-                        <h3 className="text-3xl font-black">${stats.totalRevenue}</h3>
+        <div className="p-8 space-y-10 bg-[#f8fafc] min-h-screen">
+            {/* --- উপরে ৩টি স্ট্যাটাস কার্ড --- */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* কার্ড ১: মোট আয় */}
+                <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 flex items-center gap-6">
+                    <div className="bg-indigo-100 p-4 rounded-2xl text-indigo-600">
+                        <HiCurrencyDollar className="text-4xl" />
                     </div>
-                    <div className="bg-white/20 p-4 rounded-2xl">
-                        <HiCurrencyDollar className="text-3xl" />
+                    <div>
+                        <p className="text-slate-500 font-medium uppercase tracking-wider text-xs">Total Revenue</p>
+                        <h3 className="text-3xl font-black text-slate-800">${stats.totalRevenue}</h3>
                     </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-[#ff6b08] to-[#ff8e3c] p-6 rounded-[2rem] text-white shadow-xl shadow-orange-100 flex items-center justify-between">
-                    <div>
-                        <p className="text-orange-100 text-sm font-medium">Today's Earn</p>
-                        <h3 className="text-3xl font-black">${stats.todayRevenue}</h3>
+                {/* কার্ড ২: আজকের আয় */}
+                <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 flex items-center gap-6">
+                    <div className="bg-orange-100 p-4 rounded-2xl text-[#ff6b08]">
+                        <HiTrendingUp className="text-4xl" />
                     </div>
-                    <div className="bg-white/20 p-4 rounded-2xl">
-                        <HiTrendingUp className="text-3xl" />
+                    <div>
+                        <p className="text-slate-500 font-medium uppercase tracking-wider text-xs">Today's Earnings</p>
+                        <h3 className="text-3xl font-black text-slate-800">${stats.todayRevenue}</h3>
                     </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 p-6 rounded-[2rem] text-white shadow-xl shadow-emerald-100 flex items-center justify-between">
-                    <div>
-                        <p className="text-emerald-100 text-sm font-medium">Total Orders</p>
-                        <h3 className="text-3xl font-black">{stats.statsOrders || stats.totalOrders}</h3>
+                {/* কার্ড ৩: মোট অর্ডার */}
+                <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 flex items-center gap-6">
+                    <div className="bg-emerald-100 p-4 rounded-2xl text-emerald-600">
+                        <HiShoppingCart className="text-4xl" />
                     </div>
-                    <div className="bg-white/20 p-4 rounded-2xl">
-                        <HiShoppingCart className="text-3xl" />
+                    <div>
+                        <p className="text-slate-500 font-medium uppercase tracking-wider text-xs">Total Orders</p>
+                        <h3 className="text-3xl font-black text-slate-800">{stats.totalOrders}</h3>
                     </div>
                 </div>
             </div>
 
-            {/* --- Chart Section --- */}
-            <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+            {/* --- নিচে মেইন বার চার্ট --- */}
+            <div className="bg-white p-10 rounded-[3rem] shadow-sm border border-slate-100">
                 <div className="mb-10">
-                    <h2 className="text-2xl font-black text-slate-800">Earnings <span className="text-[#ff6b08]">Flow</span></h2>
-                    <p className="text-slate-400 text-sm italic">Growth of revenue over time</p>
+                    <h2 className="text-3xl font-black text-slate-800 tracking-tight">Revenue <span className="text-[#ff6b08]">Statistics</span></h2>
+                    <p className="text-slate-400 mt-1 font-medium italic">Daily income analysis based on orders</p>
                 </div>
 
-                <div className="w-full h-[400px]">
+                <div className="w-full h-[450px]">
                     <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart data={chartData}>
-                            <defs>
-                                <linearGradient id="colorAmt" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
-                                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
-                                </linearGradient>
-                            </defs>
+                        <BarChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                             <XAxis 
                                 dataKey="date" 
                                 axisLine={false} 
                                 tickLine={false} 
-                                tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 600 }}
-                                dy={10}
+                                tick={{ fill: '#64748b', fontSize: 13, fontWeight: 600 }}
+                                dy={15}
                             />
                             <YAxis 
                                 axisLine={false} 
@@ -113,23 +113,29 @@ const OrderChart = () => {
                                 tickFormatter={(value) => `$${value}`}
                             />
                             <Tooltip 
+                                cursor={{ fill: '#f1f5f9' }}
                                 contentStyle={{ 
-                                    borderRadius: '20px', 
+                                    borderRadius: '16px', 
                                     border: 'none', 
-                                    boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)',
-                                    padding: '15px'
+                                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                                    padding: '12px'
                                 }}
                             />
-                            <Area 
-                                type="monotone" 
+                            <Bar 
                                 dataKey="amount" 
-                                stroke="#6366f1" 
-                                strokeWidth={4}
-                                fillOpacity={1} 
-                                fill="url(#colorAmt)" 
-                                animationDuration={2000}
-                            />
-                        </AreaChart>
+                                radius={[12, 12, 0, 0]} 
+                                barSize={45}
+                                animationDuration={1500}
+                            >
+                                {chartData.map((entry, index) => (
+                                    <Cell 
+                                        key={`cell-${index}`} 
+                                        fill={index === chartData.length - 1 ? '#ff6b08' : '#6366f1'} 
+                                        className="transition-all duration-300 hover:opacity-80"
+                                    />
+                                ))}
+                            </Bar>
+                        </BarChart>
                     </ResponsiveContainer>
                 </div>
             </div>
