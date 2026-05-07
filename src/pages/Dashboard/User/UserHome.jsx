@@ -14,7 +14,7 @@ const UserHome = () => {
         photoURL: ""
     });
 
-    // ✅ ডাটাবেজ থেকে তথ্য আনার ফাংশন
+    // Collect data from database
     const fetchUserData = () => {
         if (user?.email) {
             fetch(`http://localhost:5000/users/${user.email}`)
@@ -24,7 +24,7 @@ const UserHome = () => {
                         name: data.name || user.displayName || "User",
                         email: data.email || user.email,
                         phone: data.phone || "",
-                        // 🔥 প্রাধান্য: ডাটাবেজের ছবি > Google এর ছবি > ডিফল্ট ছবি
+                        // Database Pic > Google Pic > Default pic
                         photoURL: data.photoURL || user.photoURL || "https://i.ibb.co/4pDNDk1/avatar-placeholder.png"
                     });
                 })
@@ -38,7 +38,7 @@ const UserHome = () => {
         fetchUserData();
     }, [user]);
 
-    // ✅ প্রোফাইল আপডেট (Database Patch)
+    // Profile Update database patch
     const handleUpdate = async (e) => {
         e.preventDefault();
         Swal.fire({ title: "Updating Profile...", didOpen: () => Swal.showLoading() });
@@ -50,7 +50,6 @@ const UserHome = () => {
                 body: JSON.stringify({
                     name: userData.name,
                     phone: userData.phone,
-                    // 🔥 এখানে সবসময় Google থেকে আসা লেটেস্ট ছবিটাই ডাটাবেজে পাঠিয়ে দিচ্ছি
                     photoURL: user.photoURL || userData.photoURL 
                 })
             });
@@ -58,7 +57,7 @@ const UserHome = () => {
             const data = await res.json();
             if (data.modifiedCount > 0 || data.matchedCount > 0) {
                 setIsEditing(false);
-                fetchUserData(); // ডাটা রি-ফেচ
+                fetchUserData(); 
                 Swal.fire("Updated!", "Your Google profile info has been synced.", "success");
             }
         } catch (error) {
@@ -96,7 +95,7 @@ const UserHome = () => {
                 </div>
 
                 <div className="pt-16 pb-10 px-10">
-                    {/* একটি ছোট নোট যাতে ইউজার বুঝে ছবি কোত্থেকে আসছে */}
+                    {/* A Small note to know the pic*/}
                     {!isEditing && (
                         <p className="text-[10px] font-bold text-orange-500 uppercase tracking-widest mb-4 italic">
                             * Profile picture synced with Google Account
