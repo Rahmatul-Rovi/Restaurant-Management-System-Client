@@ -33,7 +33,7 @@ const OrderChart = () => {
                     const existing = acc.find(item => item.date === date);
                     if (existing) {
                         existing.amount += price;
-                        existing.orderCount += 1; // প্রতিদিনের অর্ডারের সংখ্যা যোগ হচ্ছে
+                        existing.orderCount += 1;
                     } else {
                         acc.push({ date, amount: price, orderCount: 1 });
                     }
@@ -44,7 +44,7 @@ const OrderChart = () => {
                 setStats({
                     totalRevenue: total.toFixed(2),
                     todayRevenue: today.toFixed(2),
-                    totalOrders: data.length // এখানে সরাসরি লেন্থ নিচ্ছি যাতে ভুল না হয়
+                    totalOrders: data.length
                 });
             });
     }, []);
@@ -88,7 +88,9 @@ const OrderChart = () => {
             <div className="bg-white p-10 rounded-[3.5rem] shadow-sm border border-slate-100">
                 <div className="mb-10 flex justify-between items-end">
                     <div>
-                        <h2 className="text-3xl font-black text-slate-800 tracking-tight">Revenue <span className="text-[#ff6b08]">Statistics</span></h2>
+                        <h2 className="text-3xl font-black text-slate-800 tracking-tight">
+                            Revenue <span className="text-[#ff6b08]">Statistics</span>
+                        </h2>
                         <p className="text-slate-400 mt-1 font-medium">Daily income and order count</p>
                     </div>
                     <div className="text-right hidden md:block">
@@ -103,57 +105,54 @@ const OrderChart = () => {
                     </div>
                 </div>
 
-                {/* Container height fix */}
-                <div className="w-full h-[500px] min-h-[500px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={chartData} margin={{ top: 30, right: 30, left: 0, bottom: 20 }}>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                            <XAxis 
-                                dataKey="date" 
-                                axisLine={false} 
-                                tickLine={false} 
-                                tick={{ fill: '#64748b', fontSize: 13, fontWeight: 600 }}
-                                dy={15}
+                {/* ✅ FIX: height % বাদ দিয়ে explicit pixel height দেওয়া হয়েছে */}
+                <ResponsiveContainer width="100%" height={500}>
+                    <BarChart data={chartData} margin={{ top: 30, right: 30, left: 0, bottom: 20 }}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                        <XAxis 
+                            dataKey="date" 
+                            axisLine={false} 
+                            tickLine={false} 
+                            tick={{ fill: '#64748b', fontSize: 13, fontWeight: 600 }}
+                            dy={15}
+                        />
+                        <YAxis 
+                            axisLine={false} 
+                            tickLine={false} 
+                            tick={{ fill: '#94a3b8', fontSize: 12 }}
+                            tickFormatter={(value) => `$${value}`}
+                        />
+                        <Tooltip 
+                            cursor={{ fill: '#f8fafc' }}
+                            contentStyle={{ 
+                                borderRadius: '20px', 
+                                border: 'none', 
+                                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+                                padding: '15px'
+                            }}
+                        />
+                        <Bar 
+                            dataKey="amount" 
+                            radius={[15, 15, 0, 0]} 
+                            barSize={55}
+                            animationDuration={1500}
+                        >
+                            <LabelList 
+                                dataKey="orderCount" 
+                                position="top" 
+                                formatter={(val) => `${val} Orders`}
+                                style={{ fill: '#64748b', fontSize: '12px', fontWeight: 'bold' }} 
                             />
-                            <YAxis 
-                                axisLine={false} 
-                                tickLine={false} 
-                                tick={{ fill: '#94a3b8', fontSize: 12 }}
-                                tickFormatter={(value) => `$${value}`}
-                            />
-                            <Tooltip 
-                                cursor={{ fill: '#f8fafc' }}
-                                contentStyle={{ 
-                                    borderRadius: '20px', 
-                                    border: 'none', 
-                                    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
-                                    padding: '15px'
-                                }}
-                            />
-                            <Bar 
-                                dataKey="amount" 
-                                radius={[15, 15, 0, 0]} 
-                                barSize={55}
-                                animationDuration={1500}
-                            >
-                                {/* বারের উপরে কতটি অর্ডার তা দেখানোর জন্য LabelList */}
-                                <LabelList 
-                                    dataKey="orderCount" 
-                                    position="top" 
-                                    formatter={(val) => `${val} Orders`}
-                                    style={{ fill: '#64748b', fontSize: '12px', fontWeight: 'bold' }} 
+                            {chartData.map((entry, index) => (
+                                <Cell 
+                                    key={`cell-${index}`} 
+                                    fill={index === chartData.length - 1 ? '#ff6b08' : '#6366f1'} 
+                                    fillOpacity={0.9}
                                 />
-                                {chartData.map((entry, index) => (
-                                    <Cell 
-                                        key={`cell-${index}`} 
-                                        fill={index === chartData.length - 1 ? '#ff6b08' : '#6366f1'} 
-                                        fillOpacity={0.9}
-                                    />
-                                ))}
-                            </Bar>
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
+                            ))}
+                        </Bar>
+                    </BarChart>
+                </ResponsiveContainer>
             </div>
         </div>
     );
