@@ -38,7 +38,7 @@ const Checkout = ({ price }) => {
         setProcessing(true);
         setCardError('');
 
-        // ১. স্ট্রাইপ পেমেন্ট কনফার্ম করা
+        // Stripe Payment Confirm
         const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
             payment_method: {
                 card: card,
@@ -66,7 +66,7 @@ const Checkout = ({ price }) => {
                     status: 'pending'
                 };
 
-                // ২. ডাটাবেজে অর্ডারের তথ্য সেভ করা
+                // Order data save to database
                 try {
                     const saveRes = await fetch('http://localhost:5000/api/save-order', {
                         method: 'POST',
@@ -76,7 +76,7 @@ const Checkout = ({ price }) => {
                     const saveData = await saveRes.json();
 
                     if (saveData.insertedId || saveData.success) {
-                        // ৩. পেমেন্ট সাকসেস হলে কার্ট ক্লিয়ার করা (নিশ্চিত করুন ব্যাকেন্ডে এই এপিআই আছে)
+                        // After payment success clear the cart
 
                         setProcessing(false);
                         Swal.fire({
