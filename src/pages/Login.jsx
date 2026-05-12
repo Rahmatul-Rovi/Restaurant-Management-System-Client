@@ -9,10 +9,10 @@ const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // ইউজার যে পেজ থেকে রিডাইরেক্ট হয়ে এসেছে সেই পাথটা ধরছি
+    // User redirect path
     const from = location.state?.from?.pathname || "/";
 
-    // ১. সাধারণ ইমেইল/পাসওয়ার্ড লগইন
+    // Email Password Login
     const handleLogin = (e) => {
         e.preventDefault();
         const form = e.target;
@@ -42,13 +42,13 @@ const Login = () => {
             });
     };
 
-    // ২. গুগল সাইন ইন (ডাটাবেজ কানেকশনসহ)
+    // Google Sign In
     const handleGoogleSignIn = () => {
         signInWithGoogle()
             .then(result => {
                 const user = result.user;
                 
-                // গুগল দিয়ে লগইন করলেও চেক করতে হবে সে ডাটাবেজে আছে কি না
+                // Database check if he login with google
                 const userInfo = {
                     name: user?.displayName,
                     email: user?.email,
