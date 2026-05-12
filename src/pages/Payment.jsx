@@ -1,15 +1,14 @@
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
-import { useLocation } from 'react-router-dom'; // প্রাইস রিসিভ করার জন্য
+import { useLocation } from 'react-router-dom'; 
 import Checkout from '../pages/Dashboard/User/Checkout'; 
 
-// Vite এর জন্য এনভায়রনমেন্ট ভেরিয়েবল ব্যবহারের সঠিক নিয়ম
+// Environment Variable for vite 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY); 
 
 const Payment = () => {
     const location = useLocation();
     
-    // আগের পেজ থেকে পাঠানো প্রাইস ধরছি, না থাকলে ডিফল্ট ০
     const price = location.state?.price || 0;
     const finalPrice = parseFloat(price).toFixed(2);
 
@@ -26,7 +25,7 @@ const Payment = () => {
             
             <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-orange-50">
                 <Elements stripe={stripePromise}>
-                    {/* এখানে ডাইনামিক প্রাইস পাঠিয়ে দিচ্ছি */}
+                    {/* Dynamic Price */}
                     <Checkout price={price} /> 
                 </Elements>
             </div>
