@@ -9,7 +9,7 @@ const SignUp = () => {
     const { createUser, signInWithGoogle } = useContext(AuthContext);
     const navigate = useNavigate();
 
-    // সাধারণ ইমেইল/পাসওয়ার্ড দিয়ে সাইনআপ
+    // Email Password Login
     const handleSignUp = (e) => {
         e.preventDefault();
         const form = e.target;
@@ -21,18 +21,18 @@ const SignUp = () => {
             .then(result => {
                 const loggedUser = result.user;
                 
-                // ১. ফায়ারবেস প্রোফাইল আপডেট
+                // Firebase Profile Update
                 updateProfile(loggedUser, {
                     displayName: name
                 })
                 .then(() => {
-                    // ২. ইউজার অবজেক্ট তৈরি (রোল ব্যাকেন্ডে সেট হবে, এখানে দরকার নেই)
+                    // Making User Object
                     const userInfo = {
                         name: name,
                         email: email
                     };
 
-                    // ৩. ডাটাবেজে পাঠানো
+                    // Post it on the Database
                     fetch('http://localhost:5000/users', {
                         method: 'POST',
                         headers: {
@@ -42,7 +42,7 @@ const SignUp = () => {
                     })
                     .then(res => res.json())
                     .then(data => {
-                        // ডাটা সেভ হলে বা ইউজার আগে থেকেই থাকলে নেভিগেট করো
+                        // If User exists then navigate it from Database
                         if (data.insertedId || data.message === 'User already exists') {
                             Swal.fire({
                                 title: 'Account Created!',
@@ -67,7 +67,7 @@ const SignUp = () => {
             });
     };
 
-    // গুগল দিয়ে সাইনআপ/লগইন
+    // Google Sign Up
     const handleGoogleSignUp = () => {
         signInWithGoogle()
             .then(result => {
@@ -86,7 +86,7 @@ const SignUp = () => {
                 })
                 .then(res => res.json())
                 .then(data => {
-                    // এখানে সফলভাবে ডাটাবেজে ইউজার এন্ট্রি চেক করে নেভিগেট করা হচ্ছে
+                    // Database user Login System
                     Swal.fire({
                         title: 'Welcome!',
                         text: 'Login successful!',
