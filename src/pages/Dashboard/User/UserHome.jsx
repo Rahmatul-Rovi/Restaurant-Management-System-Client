@@ -3,6 +3,8 @@ import { AuthContext } from "../../../providers/AuthProvider";
 import { HiOutlineMail, HiOutlineUserCircle, HiOutlineBadgeCheck, HiOutlinePencil, HiOutlineCheck, HiOutlinePhone } from "react-icons/hi";
 import Swal from "sweetalert2";
 
+const DEFAULT_AVATAR = "https://i.ibb.co/4pDNDk1/avatar-placeholder.png";
+
 const UserHome = () => {
     const { user, loading: authLoading } = useContext(AuthContext);
     const [isEditing, setIsEditing] = useState(false);
@@ -11,34 +13,39 @@ const UserHome = () => {
         name: "",
         email: "",
         phone: "",
-        photoURL: ""
+        photoURL: DEFAULT_AVATAR
     });
 
-    // Collect data from database
-    const fetchUserData = () => {
-        if (user?.email) {
-            fetch(`http://localhost:5000/users/${user.email}`)
-                .then(res => res.json())
-                .then(data => {
-                    setUserData({
-                        name: data.name || user.displayName || "User",
-                        email: data.email || user.email,
-                        phone: data.phone || "",
-                        // Database Pic > Google Pic > Default pic
-                        photoURL: data.photoURL || user.photoURL || "https://i.ibb.co/4pDNDk1/avatar-placeholder.png"
-                    });
-                })
-                .catch(err => {
-                    console.error("Error fetching user data:", err);
-                });
-        }
-    };
-
     useEffect(() => {
-        fetchUserData();
-    }, [user]);
+        if (!user) return;
 
-    // Profile Update database patch
+        // Step 1: সাথে সাথে Google data দিয়ে set করো
+        setUserData({
+            name: user.displayName || "User",
+            email: user.email,
+            phone: "",
+            photoURL: user.photoURL || DEFAULT_AVATAR
+        });
+
+        // Step 2: DB থেকে phone ও বাকি data আনো
+        fetch(`http://localhost:5000/users/${user.email}`)
+            .then(res => res.json())
+            .then(data => {
+                setUserData({
+                    name: data.name || user.displayName || "User",
+                    email: data.email || user.email,
+                    phone: data.phone || "",
+                    // Google photo সবসময় priority পাবে
+                    photoURL: user.photoURL || data.photoURL || DEFAULT_AVATAR
+                });
+            })
+            .catch(err => {
+                console.error("Error fetching user data:", err);
+                // Error হলেও Google data থেকে যাবে, কিছু করতে হবে না
+            });
+
+    }, [user?.email, user?.photoURL]);
+
     const handleUpdate = async (e) => {
         e.preventDefault();
         Swal.fire({ title: "Updating Profile...", didOpen: () => Swal.showLoading() });
@@ -50,26 +57,35 @@ const UserHome = () => {
                 body: JSON.stringify({
                     name: userData.name,
                     phone: userData.phone,
-                    photoURL: user.photoURL || userData.photoURL 
+                    photoURL: user.photoURL || userData.photoURL
                 })
             });
 
             const data = await res.json();
             if (data.modifiedCount > 0 || data.matchedCount > 0) {
                 setIsEditing(false);
-                fetchUserData(); 
-                Swal.fire("Updated!", "Your Google profile info has been synced.", "success");
+                // State directly update করো, আলাদা fetch দরকার নেই
+                setUserData(prev => ({
+                    ...prev,
+                    name: userData.name,
+                    phone: userData.phone,
+                    photoURL: user.photoURL || userData.photoURL
+                }));
+                Swal.fire("Updated!", "Your profile has been updated.", "success");
             }
         } catch (error) {
             Swal.fire("Error", "Could not update profile", "error");
         }
     };
 
-    if (authLoading) return <div className="flex justify-center items-center h-screen font-bold text-orange-500">Loading...</div>;
+    if (authLoading) return (
+        <div className="flex justify-center items-center h-screen font-bold text-orange-500">
+            Loading...
+        </div>
+    );
 
     return (
         <div className="p-8 bg-slate-50 min-h-screen">
-            {/* Header Section */}
             <div className="mb-10">
                 <h2 className="text-4xl font-black text-slate-800">
                     Welcome Back, <span className="text-[#ff6b08]">{userData.name}!</span>
@@ -77,25 +93,22 @@ const UserHome = () => {
                 <p className="text-slate-500 mt-2 font-medium">Manage your personal information and account settings.</p>
             </div>
 
-            {/* Profile Card Section */}
             <div className="max-w-2xl bg-white rounded-[2.5rem] shadow-xl shadow-orange-100 border border-orange-50 overflow-hidden transition-all">
                 
-                {/* Banner Section (No Upload needed as it's Google Pic) */}
                 <div className="bg-[#ff6b08] h-32 w-full relative">
                     <div className="absolute -bottom-12 left-10 group">
                         <div className="relative">
                             <img 
-                                src={userData.photoURL} 
+                                src={userData.photoURL}
                                 alt="Profile" 
                                 className="w-28 h-28 rounded-3xl border-4 border-white object-cover shadow-lg bg-white"
-                                onError={(e) => e.target.src = "https://i.ibb.co/4pDNDk1/avatar-placeholder.png"}
+                                onError={(e) => e.target.src = DEFAULT_AVATAR}
                             />
                         </div>
                     </div>
                 </div>
 
                 <div className="pt-16 pb-10 px-10">
-                    {/* A Small note to know the pic*/}
                     {!isEditing && (
                         <p className="text-[10px] font-bold text-orange-500 uppercase tracking-widest mb-4 italic">
                             * Profile picture synced with Google Account
@@ -103,7 +116,6 @@ const UserHome = () => {
                     )}
 
                     {isEditing ? (
-                        /* --- EDIT MODE FORM --- */
                         <form onSubmit={handleUpdate} className="space-y-5">
                             <div className="grid grid-cols-1 gap-4">
                                 <div>
@@ -137,7 +149,6 @@ const UserHome = () => {
                             </div>
                         </form>
                     ) : (
-                        /* --- VIEW MODE --- */
                         <div className="space-y-6">
                             <div className="flex items-center gap-4 group">
                                 <div className="bg-orange-100 p-3 rounded-2xl group-hover:scale-110 transition-transform">
