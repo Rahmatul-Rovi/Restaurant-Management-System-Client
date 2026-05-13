@@ -10,7 +10,7 @@ import {
 } from "react-icons/hi";
 import { HiOutlineChartBar } from "react-icons/hi";
 
-import useAdmin from "../hooks/useAdmin"; // ✅ ADD THIS
+import useAdmin from "../hooks/useAdmin";
 
 const DashboardLayout = () => {
   // ✅ REAL admin check from DB

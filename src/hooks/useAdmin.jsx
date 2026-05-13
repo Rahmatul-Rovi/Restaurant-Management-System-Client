@@ -8,7 +8,7 @@ const useAdmin = () => {
 
     const { data, isLoading } = useQuery({
         queryKey: ['admin', user?.email],
-        enabled: !!user?.email, // ✅ IMPORTANT FIX
+        enabled: !!user?.email,
         queryFn: async () => {
             const res = await fetch(`http://localhost:5000/users/${user.email}`);
             return res.json();
