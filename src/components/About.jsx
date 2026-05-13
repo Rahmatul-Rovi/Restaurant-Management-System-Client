@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { HiOutlineLightBulb, HiOutlineUserGroup, HiOutlineGlobeAlt, HiOutlineRocket } from "react-icons/hi";
+import { HiOutlineLightBulb, HiOutlineUserGroup, HiOutlineGlobeAlt, HiOutlineRocketLaunch } from "react-icons/hi2";
 
 const About = () => {
     useEffect(() => {
@@ -76,7 +76,7 @@ const About = () => {
                     delay="300"
                 />
                 <ValueCard 
-                    icon={<HiOutlineRocket />} 
+                    icon={<HiOutlineRocketLaunch />} 
                     title="Fast Delivery" 
                     desc="Our average delivery time is under 30 minutes."
                     delay="400"
