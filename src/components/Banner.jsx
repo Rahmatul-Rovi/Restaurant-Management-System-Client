@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Banner = () => {
-    // সিগনেচার কালার কোড
+    // Signature COlor COde
     const brandColor = "#ff6b08";
 
     return (
@@ -75,7 +75,7 @@ const Banner = () => {
                         </div>
                     </div>
 
-                    {/* Bottom Gradient Decoration (Optional for Pro look) */}
+                    {/* Bottom Gradient Decoration */}
                     <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white to-transparent z-5"></div>
 
                 </div>
