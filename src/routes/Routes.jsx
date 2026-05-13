@@ -25,6 +25,7 @@ import Payment from "../pages/Payment";
 import MyOrders from "../pages/Dashboard/User/MyOrders";
 import ManageOrders from "../pages/Dashboard/Admin/ManageOrders";
 import OrderChart from "../pages/Dashboard/Admin/OrderChart";
+import About from "../components/About";
 
 export const router = createBrowserRouter([
     {
@@ -39,7 +40,8 @@ export const router = createBrowserRouter([
             { path: "/login", element: <Login /> },
             { path: "/cart", element: <Cart /> },
             {path: "/coverage", element: <Coverage/>},
-            {path: "/payment", element: <Payment/>}
+            {path: "/payment", element: <Payment/>},
+            {path: "/about", element: <About/>}
         ],
     },
 
