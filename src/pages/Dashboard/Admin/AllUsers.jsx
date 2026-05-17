@@ -8,7 +8,7 @@ const AllUsers = () => {
     queryKey: ['users'],
     queryFn: async () => {
         const res = await fetch('http://localhost:5000/users');
-        // চেক করো রেসপন্স ঠিক আছে কি না
+        // Check if the response is correct or wrong
         if (!res.ok) {
             throw new Error('Network response was not ok');
         }
@@ -36,7 +36,7 @@ const AllUsers = () => {
         })
     }
 
-    // handleDeleteUser ফাংশনটি AllUsers.jsx এ অ্যাড করো
+    // add HandleDelete function
 const handleDeleteUser = (user) => {
     Swal.fire({
         title: "Are you sure?",
