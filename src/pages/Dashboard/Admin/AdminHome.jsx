@@ -3,7 +3,7 @@ import { AuthContext } from "../../../providers/AuthProvider";
 import { HiOutlinePencil, HiOutlineCheck, HiOutlineUserCircle, HiOutlineCloudUpload } from "react-icons/hi";
 import Swal from "sweetalert2";
 
-// 🔥 ImgBB API Key (এভাবে রাখা ভালো, তবে পরে .env ফাইলে নিয়ে যেও)
+//  ImgBB API Key 
 const image_hosting_key = "YOUR_IMGBB_API_KEY"; 
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
@@ -19,7 +19,7 @@ const AdminHome = () => {
         photoURL: ""
     });
 
-    // ✅ Load user data
+    //  Load user data
     useEffect(() => {
         if (user?.email) {
             fetch(`http://localhost:5000/users/${user.email}`)
@@ -29,7 +29,7 @@ const AdminHome = () => {
                         name: data.name || user.displayName || "Admin",
                         email: data.email || user.email,
                         phone: data.phone || "",
-                        // যদি গুগল দিয়ে লগইন হয় আর ডাটাবেজে ছবি না থাকে, তবে গুগল পিকচার নিবে
+                        // if google login then get the google image
                         photoURL: data.photoURL || user.photoURL || "" 
                     });
                 })
@@ -37,7 +37,7 @@ const AdminHome = () => {
         }
     }, [user]);
 
-    // ✅ IMAGE UPLOAD HANDLER (ImgBB)
+    // IMAGE UPLOAD HANDLER (ImgBB)
     const handleImageUpload = async (e) => {
         const imageFile = e.target.files[0];
         if (!imageFile) return;
@@ -72,7 +72,7 @@ const AdminHome = () => {
         }
     };
 
-    // ✅ PROFILE UPDATE HANDLER
+    // PROFILE UPDATE HANDLER
     const handleUpdate = async (e) => {
         e.preventDefault();
         Swal.fire({ title: "Updating...", didOpen: () => Swal.showLoading() });

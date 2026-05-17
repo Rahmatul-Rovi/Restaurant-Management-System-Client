@@ -32,7 +32,7 @@ const AddItems = () => {
 
             const data = await res.json();
 
-            // ✅ FIXED CONDITION
+            // FIXED CONDITION
             if (data.success) {
 
                 form.reset(); 
