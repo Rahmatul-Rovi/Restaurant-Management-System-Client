@@ -105,7 +105,7 @@ const OrderChart = () => {
                     </div>
                 </div>
 
-                {/* ✅ FIX: height % বাদ দিয়ে explicit pixel height দেওয়া হয়েছে */}
+                // Order Chart
                 <ResponsiveContainer width="100%" height={500}>
                     <BarChart data={chartData} margin={{ top: 30, right: 30, left: 0, bottom: 20 }}>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
