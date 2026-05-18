@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from "react-router-dom";
-import useAdmin from "../hooks/useAdmin"; // তোমার হুকটি ইমপোর্ট করো
+import useAdmin from "../hooks/useAdmin";
 import { useContext } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 
@@ -16,7 +16,7 @@ const AdminRoute = ({ children }) => {
         return children;
     }
 
-    // যদি ইউজার অ্যাডমিন না হয়, তাকে হোমপেজে পাঠিয়ে দাও
+    // If user not Admin, then get it on home page
     return <Navigate to="/" state={{ from: location }} replace></Navigate>;
 };
 

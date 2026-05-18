@@ -77,7 +77,7 @@ export const router = createBrowserRouter([
         ]
     },
 
-    // 👑 ADMIN DASHBOARD (SEPARATE)
+    // ADMIN DASHBOARD (SEPARATE)
     {
         path: "/admin-dashboard",
         element: (
