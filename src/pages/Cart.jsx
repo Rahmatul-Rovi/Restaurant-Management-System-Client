@@ -1,11 +1,11 @@
 import { HiOutlineTrash } from 'react-icons/hi';
-import { useNavigate, Link } from 'react-router-dom'; // useNavigate ইমপোর্ট করুন
+import { useNavigate, Link } from 'react-router-dom'; 
 import useCart from '../hooks/useCart';
 import Swal from 'sweetalert2';
 
 const Cart = () => {
     const [cart, refetch] = useCart(); 
-    const navigate = useNavigate(); // নেভিগেশন হুক
+    const navigate = useNavigate();
 
     // Calculate total price 
     const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
@@ -41,7 +41,7 @@ const Cart = () => {
         });
     }
 
-    // পেমেন্ট পেজে ডাটা সহ পাঠানোর ফাংশন
+    // Send to Payment page with data
     const handleProceedToCheckout = () => {
         navigate('/dashboard/checkout', { state: { price: totalPrice } });
     };
@@ -90,7 +90,6 @@ const Cart = () => {
                             </div>
                         </div>
                         
-                        {/* বাটনটি এখন handleProceedToCheckout ফাংশন কল করবে */}
                         <button 
                             onClick={handleProceedToCheckout}
                             className="btn bg-[#ff6b08] hover:bg-slate-900 border-none w-full text-white font-bold rounded-full py-4 shadow-lg shadow-orange-100"
