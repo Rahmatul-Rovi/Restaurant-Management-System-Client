@@ -16,13 +16,13 @@ const Home = () => {
     useEffect(() => {
         AOS.init({
             duration: 800,
-            once: false,           // scroll করলে বারবার animate হবে
+            once: false,          
             offset: 80,
             easing: 'ease-out-cubic',
             delay: 0,
         });
 
-        // Route change বা re-render এ AOS refresh করা
+        // Route change or re-render AOS refresh
         AOS.refresh();
     }, []);
 
@@ -35,17 +35,17 @@ const Home = () => {
                 `}
             </style>
 
-            {/* Banner — উপর থেকে নামবে, একটু বড় duration */}
+            {/* Banner — A big duration */}
             <div data-aos="fade-down" data-aos-duration="1000" data-aos-easing="ease-out-back">
                 <Banner />
             </div>
 
-            {/* Categories — নিচ থেকে উঠবে, ছোট delay */}
+            {/* Categories — A Small delay */}
             <div data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
                 <Categories />
             </div>
 
-            {/* PopularFoods — zoom in হবে, একটু delay দিয়ে */}
+            {/* PopularFoods — zoom in With some delay  */}
             <div className="text-center my-20"
                 data-aos="zoom-in-up"
                 data-aos-duration="900"
@@ -54,7 +54,7 @@ const Home = () => {
                 <PopularFoods />
             </div>
 
-            {/* WhyChooseUs — বাম থেকে আসবে, flip effect */}
+            {/* WhyChooseUs — Left to Right, flip effect */}
             <div data-aos="fade-right"
                 data-aos-duration="900"
                 data-aos-delay="100"
@@ -62,7 +62,7 @@ const Home = () => {
                 <WhyChooseUs />
             </div>
 
-            {/* Stats — ডান থেকে আসবে */}
+            {/* Stats — Right to Left */}
             <div data-aos="fade-left"
                 data-aos-duration="900"
                 data-aos-delay="100"
@@ -70,7 +70,7 @@ const Home = () => {
                 <Stats />
             </div>
 
-            {/* Testimonials — নিচ থেকে উঠবে + flip */}
+            {/* Testimonials — flip */}
             <div data-aos="flip-up"
                 data-aos-duration="1000"
                 data-aos-delay="100"
@@ -78,7 +78,7 @@ const Home = () => {
                 <Testimonials />
             </div>
 
-            {/* Newsletter — zoom করে আসবে */}
+            {/* Newsletter — zoom  */}
             <div data-aos="zoom-in"
                 data-aos-duration="800"
                 data-aos-delay="50"
@@ -86,7 +86,7 @@ const Home = () => {
                 <Newsletter />
             </div>
 
-            {/* Contact — fade up, সবার শেষে */}
+            {/* Contact — fade up */}
             <div data-aos="fade-up"
                 data-aos-duration="800"
                 data-aos-delay="100">
