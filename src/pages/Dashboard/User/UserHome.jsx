@@ -19,7 +19,7 @@ const UserHome = () => {
     useEffect(() => {
         if (!user) return;
 
-        // Step 1: সাথে সাথে Google data দিয়ে set করো
+        // Step 1: Google Data Set
         setUserData({
             name: user.displayName || "User",
             email: user.email,
@@ -27,7 +27,7 @@ const UserHome = () => {
             photoURL: user.photoURL || DEFAULT_AVATAR
         });
 
-        // Step 2: DB থেকে phone ও বাকি data আনো
+        // Step 2: Get data from DB
         fetch(`http://localhost:5000/users/${user.email}`)
             .then(res => res.json())
             .then(data => {
@@ -35,13 +35,12 @@ const UserHome = () => {
                     name: data.name || user.displayName || "User",
                     email: data.email || user.email,
                     phone: data.phone || "",
-                    // Google photo সবসময় priority পাবে
+                    // Always priority Google photo
                     photoURL: user.photoURL || data.photoURL || DEFAULT_AVATAR
                 });
             })
             .catch(err => {
                 console.error("Error fetching user data:", err);
-                // Error হলেও Google data থেকে যাবে, কিছু করতে হবে না
             });
 
     }, [user?.email, user?.photoURL]);
@@ -64,7 +63,7 @@ const UserHome = () => {
             const data = await res.json();
             if (data.modifiedCount > 0 || data.matchedCount > 0) {
                 setIsEditing(false);
-                // State directly update করো, আলাদা fetch দরকার নেই
+                // State directly updated
                 setUserData(prev => ({
                     ...prev,
                     name: userData.name,
