@@ -22,7 +22,7 @@ const MyOrders = () => {
                 .then(data => {
                     setOrders(data);
                     
-                    // --- স্ট্যাটাস ক্যালকুলেশন ---
+                    // --- Status Calculation ---
                     let totalS = 0;
                     let todayO = 0;
                     let todayS = 0;
@@ -55,7 +55,7 @@ const MyOrders = () => {
 
     return (
         <div className="p-8 min-h-screen bg-[#f8fafc] space-y-10">
-            {/* --- হেডার সেকশন --- */}
+            {/* --- Header Section --- */}
             <div>
                 <h2 className="text-3xl font-black text-slate-800 tracking-tight">
                     Order <span className="text-[#ff6b08]">History</span>
@@ -63,9 +63,9 @@ const MyOrders = () => {
                 <p className="text-slate-400 mt-1 font-medium">Manage and track your recent purchases</p>
             </div>
 
-            {/* --- স্ট্যাটাস কার্ড সেকশন --- */}
+            {/* ---Status Card Section --- */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {/* কার্ড ১: মোট অর্ডার */}
+                {/* Card-1: Total Order */}
                 <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-4">
                     <div className="bg-blue-100 p-3 rounded-2xl text-blue-600">
                         <HiOutlineShoppingBag className="text-2xl" />
@@ -76,7 +76,7 @@ const MyOrders = () => {
                     </div>
                 </div>
 
-                {/* কার্ড ২: মোট খরচ */}
+                {/* Card-2: Total Amount */}
                 <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-4">
                     <div className="bg-emerald-100 p-3 rounded-2xl text-emerald-600">
                         <HiOutlineCash className="text-2xl" />
@@ -87,7 +87,7 @@ const MyOrders = () => {
                     </div>
                 </div>
 
-                {/* কার্ড ৩: আজকের অর্ডার */}
+                {/* Card-3: Today's Order */}
                 <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-4">
                     <div className="bg-orange-100 p-3 rounded-2xl text-orange-600">
                         <HiOutlineCalendar className="text-2xl" />
@@ -98,7 +98,7 @@ const MyOrders = () => {
                     </div>
                 </div>
 
-                {/* কার্ড ৪: আজকের খরচ */}
+                {/* Card-4: Today's Cost */}
                 <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-4">
                     <div className="bg-indigo-100 p-3 rounded-2xl text-indigo-600">
                         <HiOutlineBadgeCheck className="text-2xl" />
@@ -110,7 +110,7 @@ const MyOrders = () => {
                 </div>
             </div>
 
-            {/* --- টেবিল সেকশন --- */}
+            {/* --- Table Section --- */}
             <div className="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="table w-full border-collapse">
