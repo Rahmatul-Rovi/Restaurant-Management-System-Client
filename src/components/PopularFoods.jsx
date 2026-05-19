@@ -8,7 +8,7 @@ const PopularFoods = () => {
 
     useEffect(() => {
         // Data fetching from database
-        fetch('http://localhost:5000/menu/popular') 
+        fetch('https://tasty-twists-server.vercel.app/menu/popular') 
             .then(res => res.json())
             .then(data => {
                 setFoods(data.slice(0, 8)); 

@@ -17,7 +17,7 @@ const MyOrders = () => {
 
     useEffect(() => {
         if (user?.email) {
-            fetch(`http://localhost:5000/api/user-orders?email=${user.email}`)
+            fetch(`https://tasty-twists-server.vercel.app/api/user-orders?email=${user.email}`)
                 .then(res => res.json())
                 .then(data => {
                     setOrders(data);

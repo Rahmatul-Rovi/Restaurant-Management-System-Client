@@ -22,7 +22,7 @@ const AddItems = () => {
         };
 
         try {
-            const res = await fetch('http://localhost:5000/menu', {
+            const res = await fetch('https://tasty-twists-server.vercel.app/menu', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'

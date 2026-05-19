@@ -22,7 +22,7 @@ const AdminHome = () => {
     //  Load user data
     useEffect(() => {
         if (user?.email) {
-            fetch(`http://localhost:5000/users/${user.email}`)
+            fetch(`https://tasty-twists-server.vercel.app/users/${user.email}`)
                 .then(res => res.json())
                 .then(data => {
                     setFormData({
@@ -78,7 +78,7 @@ const AdminHome = () => {
         Swal.fire({ title: "Updating...", didOpen: () => Swal.showLoading() });
 
         try {
-            const res = await fetch(`http://localhost:5000/users/update/${user.email}`, {
+            const res = await fetch(`https://tasty-twists-server.vercel.app/users/update/${user.email}`, {
                 method: "PATCH",
                 headers: { "content-type": "application/json" },
                 body: JSON.stringify(formData)

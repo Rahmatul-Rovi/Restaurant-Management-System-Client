@@ -10,7 +10,7 @@ const OrderChart = () => {
     const [stats, setStats] = useState({ totalRevenue: 0, todayRevenue: 0, totalOrders: 0 });
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/admin/all-orders')
+        fetch('https://tasty-twists-server.vercel.app/api/admin/all-orders')
             .then(res => res.json())
             .then(data => {
                 let total = 0;

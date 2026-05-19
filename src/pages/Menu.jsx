@@ -11,7 +11,7 @@ const Menu = () => {
 
     useEffect(() => {
         // Fetch All Data Once
-        fetch('http://localhost:5000/menu')
+        fetch('https://tasty-twists-server.vercel.app/menu')
             .then(res => res.json())
             .then(data => {
                 setAllMenu(data);

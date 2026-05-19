@@ -16,7 +16,7 @@ const Checkout = ({ price }) => {
 
     useEffect(() => {
         if (price > 0) {
-            fetch('http://localhost:5000/api/order', {
+            fetch('https://tasty-twists-server.vercel.app/api/order', {
                 method: 'POST',
                 headers: { 'content-type': 'application/json' },
                 body: JSON.stringify({ price })
@@ -68,7 +68,7 @@ const Checkout = ({ price }) => {
 
                 // Order data save to database
                 try {
-                    const saveRes = await fetch('http://localhost:5000/api/save-order', {
+                    const saveRes = await fetch('https://tasty-twists-server.vercel.app/api/save-order', {
                         method: 'POST',
                         headers: { 'content-type': 'application/json' },
                         body: JSON.stringify(orderDetails)

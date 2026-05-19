@@ -55,7 +55,7 @@ const Login = () => {
                     photoURL: user?.photoURL
                 };
 
-                fetch('http://localhost:5000/users', {
+                fetch('https://tasty-twists-server.vercel.app/users', {
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json'

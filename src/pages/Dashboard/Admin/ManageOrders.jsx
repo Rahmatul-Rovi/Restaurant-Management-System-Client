@@ -6,13 +6,13 @@ const ManageOrders = () => {
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/admin/all-orders')
+        fetch('https://tasty-twists-server.vercel.app/api/admin/all-orders')
             .then(res => res.json())
             .then(data => setOrders(data));
     }, []);
 
     const handleUpdateStatus = (id) => {
-        fetch(`http://localhost:5000/api/admin/order-status/${id}`, {
+        fetch(`https://tasty-twists-server.vercel.app/api/admin/order-status/${id}`, {
             method: 'PATCH',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ status: 'confirmed' })

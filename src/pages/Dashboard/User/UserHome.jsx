@@ -28,7 +28,7 @@ const UserHome = () => {
         });
 
         // Step 2: Get data from DB
-        fetch(`http://localhost:5000/users/${user.email}`)
+        fetch(`https://tasty-twists-server.vercel.app/users/${user.email}`)
             .then(res => res.json())
             .then(data => {
                 setUserData({
@@ -50,7 +50,7 @@ const UserHome = () => {
         Swal.fire({ title: "Updating Profile...", didOpen: () => Swal.showLoading() });
 
         try {
-            const res = await fetch(`http://localhost:5000/users/update/${user.email}`, {
+            const res = await fetch(`https://tasty-twists-server.vercel.app/users/update/${user.email}`, {
                 method: "PATCH",
                 headers: { "content-type": "application/json" },
                 body: JSON.stringify({

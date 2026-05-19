@@ -19,7 +19,7 @@ const Payment = () => {
                     Complete Your <span className="text-[#ff6b08]">Payment</span>
                 </h2>
                 <p className="text-slate-500 mt-2 font-medium">
-                    Total Amount: <span className="text-slate-900 font-bold">${finalPrice}</span>
+                    Total Amount: <span className="text-slate-900 font-bold">৳{finalPrice}</span>
                 </p>
             </div>
             

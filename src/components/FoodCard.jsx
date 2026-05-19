@@ -25,7 +25,7 @@ const FoodCard = ({ item }) => {
                 price
             };
 
-            fetch('http://localhost:5000/carts', {
+            fetch('https://tasty-twists-server.vercel.app/carts', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'

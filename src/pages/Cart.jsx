@@ -7,9 +7,9 @@ const Cart = () => {
     const [cart, refetch] = useCart(); 
     const navigate = useNavigate();
 
-    // Calculate total price 
     const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
 
+    // async/await + try/catch added
     const handleDelete = (id) => {
         Swal.fire({
             title: "Are you sure?",
@@ -19,15 +19,16 @@ const Cart = () => {
             confirmButtonColor: "#ff6b08",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!"
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:5000/carts/${id}`, {
-                    method: 'DELETE'
-                })
-                .then(res => res.json())
-                .then(data => {
+                try {
+                    const res = await fetch(
+                        `https://tasty-twists-server.vercel.app/carts/${id}`,
+                        { method: 'DELETE' }
+                    );
+                    const data = await res.json();
                     if (data.deletedCount > 0) {
-                        refetch(); 
+                        refetch();
                         Swal.fire({
                             title: "Deleted!",
                             text: "Your food has been removed.",
@@ -36,13 +37,20 @@ const Cart = () => {
                             timer: 1500
                         });
                     }
-                })
+                } catch (error) {
+                    Swal.fire({ 
+                        icon: "error", 
+                        title: "Failed!", 
+                        text: "Could not delete item. Try again." 
+                    });
+                }
             }
         });
-    }
+    };
 
-    // Send to Payment page with data
+    // Empty cart hole checkout e jete dibe na
     const handleProceedToCheckout = () => {
+        if (cart.length === 0) return;
         navigate('/dashboard/checkout', { state: { price: totalPrice } });
     };
 
@@ -61,10 +69,17 @@ const Cart = () => {
                     <div className="lg:col-span-2 space-y-4">
                         {cart.map((item) => (
                             <div key={item._id} className="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
-                                <img src={item.image} alt={item.name} className="w-24 h-24 object-cover rounded-xl" />
+                                <img 
+                                    src={item.image} 
+                                    alt={item.name} 
+                                    className="w-24 h-24 object-cover rounded-xl"
+                                    // Image load fail hole fallback
+                                    onError={(e) => e.target.src = '/placeholder-food.png'}
+                                />
                                 <div className="flex-1">
                                     <h3 className="font-bold text-lg text-slate-800">{item.name}</h3>
-                                    <p className="text-[#ff6b08] font-bold">৳{item.price}</p>
+                                    {/* Currency fix $ + toFixed */}
+                                    <p className="text-[#ff6b08] font-bold">${item.price.toFixed(2)}</p>
                                 </div>
                                 <button 
                                     onClick={() => handleDelete(item._id)}
@@ -86,22 +101,23 @@ const Cart = () => {
                             </div>
                             <div className="flex justify-between text-xl font-bold text-slate-800 border-t pt-4">
                                 <span>Total Price:</span>
-                                <span className="text-[#ff6b08]">৳{totalPrice.toFixed(2)}</span>
+                                {/* Currency fix */}
+                                <span className="text-[#ff6b08]">${totalPrice.toFixed(2)}</span>
                             </div>
                         </div>
                         
                         <button 
                             onClick={handleProceedToCheckout}
-                            className="btn bg-[#ff6b08] hover:bg-slate-900 border-none w-full text-white font-bold rounded-full py-4 shadow-lg shadow-orange-100"
+                            disabled={cart.length === 0}
+                            className="btn bg-[#ff6b08] hover:bg-slate-900 border-none w-full text-white font-bold rounded-full py-4 shadow-lg shadow-orange-100 disabled:bg-slate-300"
                         >
                             Proceed to Checkout
                         </button>
-                       
                     </div>
                 </div>
             ) : (
                 <div className="text-center py-20 bg-slate-50 rounded-3xl border border-dashed border-slate-200">
-                    <p className="text-2xl font-bold text-slate-400 mb-6">Your cart is empty brother!</p>
+                    <p className="text-2xl font-bold text-slate-400 mb-6">Your cart is empty!</p>
                     <Link to="/menu" className="btn bg-[#ff6b08] text-white border-none rounded-full px-10">
                         Go To Menu
                     </Link>

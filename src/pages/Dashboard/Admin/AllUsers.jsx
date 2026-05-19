@@ -7,7 +7,7 @@ const AllUsers = () => {
    const { data: users = [], isLoading, refetch } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
-        const res = await fetch('http://localhost:5000/users');
+        const res = await fetch('https://tasty-twists-server.vercel.app/users');
         // Check if the response is correct or wrong
         if (!res.ok) {
             throw new Error('Network response was not ok');
@@ -18,7 +18,7 @@ const AllUsers = () => {
 
     // user to admin
     const handleMakeAdmin = (user) => {
-        fetch(`http://localhost:5000/users/admin/${user._id}`, {
+        fetch(`https://tasty-twists-server.vercel.app/users/admin/${user._id}`, {
             method: 'PATCH'
         })
         .then(res => res.json())
@@ -48,7 +48,7 @@ const handleDeleteUser = (user) => {
         confirmButtonText: "Yes, delete!"
     }).then(async (result) => {
         if (result.isConfirmed) {
-            fetch(`http://localhost:5000/users/${user._id}`, {
+            fetch(`https://tasty-twists-server.vercel.app/users/${user._id}`, {
                 method: 'DELETE'
             })
             .then(res => res.json())

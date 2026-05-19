@@ -10,7 +10,7 @@ const ManageItems = () => {
     const { data: menu = [], refetch, isLoading } = useQuery({
         queryKey: ['menu'],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/menu');
+            const res = await fetch('https://tasty-twists-server.vercel.app/menu');
             return res.json();
         }
     });
@@ -27,7 +27,7 @@ const ManageItems = () => {
             confirmButtonText: "Yes, delete it!"
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const res = await fetch(`http://localhost:5000/menu/${item._id}`, {
+                const res = await fetch(`https://tasty-twists-server.vercel.app/menu/${item._id}`, {
                     method: 'DELETE'
                 });
                 const data = await res.json();
@@ -51,7 +51,7 @@ const ManageItems = () => {
             image: form.image.value
         };
 
-        const res = await fetch(`http://localhost:5000/menu/${selectedItem._id}`, {
+        const res = await fetch(`https://tasty-twists-server.vercel.app/menu/${selectedItem._id}`, {
             method: 'PATCH',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify(updatedInfo)
