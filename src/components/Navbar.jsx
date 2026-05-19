@@ -102,7 +102,7 @@ const Navbar = () => {
                             </label>
                             <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-4 shadow bg-white rounded-2xl w-52">
                                 <li className="px-2 pb-2 font-bold text-slate-800 border-b mb-2">{user?.displayName || "User"}</li>
-                                <li><Link to="/profile">My Profile</Link></li>
+                                <li><Link to="#">My Profile</Link></li>
                                 <li><Link to="/dashboard">Dashboard</Link></li>
                                 <li><button onClick={handleLogOut} className="text-red-500 font-bold">Logout</button></li>
                             </ul>
