@@ -1,8 +1,7 @@
 import { HiOutlineLocationMarker } from "react-icons/hi";
 
 const Coverage = () => {
-    // আপনার লোকেশনের জন্য গুগল ম্যাপের এমবেড লিঙ্ক
-    // আপনি চাইলে গুগল ম্যাপে গিয়ে Share > Embed map থেকে আপনার একদম নিখুঁত লিঙ্কটি এখানে বসাতে পারেন।
+  
     const mapLocation = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3650.3282333418856!2d90.354117!3d23.806925!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c1109961a293%3A0x6d11b3336449179!2sMirpur%202!5e0!3m2!1sen!2sbd!4v1714567890123!5m2!1sen!2sbd";
 
     return (

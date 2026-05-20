@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 import AOS from 'aos';
-import 'aos/dist/aos.css'; // AOS এর স্টাইল ইমপোর্ট করা জরুরি
+import 'aos/dist/aos.css'; 
 import { HiOutlineMail, HiOutlinePhone, HiOutlineLocationMarker } from "react-icons/hi";
 
 const Contact = () => {
 
     useEffect(() => {
-        // AOS ইনিশিয়ালাইজ করা (হোম/অ্যাবাউট পেজের মতোই)
         AOS.init({
             duration: 1000,
             once: false,
@@ -16,7 +15,7 @@ const Contact = () => {
     return (
         <div className="bg-white min-h-screen py-16 px-6 md:px-12 overflow-x-hidden">
             <div className="max-w-7xl mx-auto">
-                {/* Header Section - স্লাইড হয়ে আসবে */}
+                {/* Header Section  */}
                 <div className="text-center mb-20" data-aos="fade-down">
                     <span className="text-[#ff6b08] font-extrabold uppercase tracking-widest text-xs mb-3 block">
                         Support Center
@@ -32,7 +31,7 @@ const Contact = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
                     
-                    {/* Left Side: Contact Info Cards - বাম দিক থেকে ভেসে আসবে */}
+                    {/* Left Side: Contact Info Cards - left to right */}
                     <div className="space-y-6" data-aos="fade-right">
                         {/* Email Card */}
                         <div className="flex items-center gap-6 p-8 bg-orange-50/50 rounded-[2rem] border border-orange-100 hover:shadow-xl hover:shadow-orange-100/50 transition-all duration-300 group">
@@ -68,11 +67,11 @@ const Contact = () => {
                         </div>
                     </div>
 
-                    {/* Right Side: Professional Contact Form - জুম-ইন হয়ে আসবে */}
+                    {/* Right Side: Professional Contact Form - zoom in */}
                     <div 
                         className="bg-white p-10 md:p-12 rounded-[3rem] shadow-2xl shadow-orange-100 border border-orange-50 relative overflow-hidden"
                         data-aos="zoom-in"
-                        data-aos-delay="200" // কার্ড আসার পর ফর্ম আসবে
+                        data-aos-delay="200" 
                     >
                         {/* Background Decoration */}
                         <div className="absolute -top-10 -right-10 w-32 h-32 bg-orange-50 rounded-full blur-3xl opacity-50"></div>
@@ -81,11 +80,11 @@ const Contact = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="form-control">
                                     <label className="label text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Full Name</label>
-                                    <input type="text" placeholder="John Doe" className="w-full px-5 py-4 bg-slate-50 border-2 border-transparent focus:border-[#ff6b08] focus:bg-white outline-none transition-all rounded-2xl font-medium" />
+                                    <input type="text" placeholder="Enter your Name" className="w-full px-5 py-4 bg-slate-50 border-2 border-transparent focus:border-[#ff6b08] focus:bg-white outline-none transition-all rounded-2xl font-medium" />
                                 </div>
                                 <div className="form-control">
                                     <label className="label text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Email Address</label>
-                                    <input type="email" placeholder="john@example.com" className="w-full px-5 py-4 bg-slate-50 border-2 border-transparent focus:border-[#ff6b08] focus:bg-white outline-none transition-all rounded-2xl font-medium" />
+                                    <input type="email" placeholder="Enter your Email" className="w-full px-5 py-4 bg-slate-50 border-2 border-transparent focus:border-[#ff6b08] focus:bg-white outline-none transition-all rounded-2xl font-medium" />
                                 </div>
                             </div>
                             
